@@ -1,0 +1,35 @@
+#mainScreen{
+
+    
+    align-self: center;
+    width: 100%;
+
+    margin: 0px;
+    padding: 0px;
+}
+
+h4{
+    text-align: center;
+}
+.single_center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.in_row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.dictionary{
+
+    text-align: center;
+}
+.titleEnabled{
+    color: black
+}
+.titleDisabled{
+    color: rgb(200, 200, 200);
+}

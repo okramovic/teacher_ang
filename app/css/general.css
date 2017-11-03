@@ -1,0 +1,139 @@
+@font-face {
+    
+        /*
+        google fonts considerd: Amaranth|Antic|Ek+Mukta|Frank+Ruhl+Libre|Nobile|Sarala
+                                    experimentals: Julius+Sans+One, Monoton (for name); Carrois Gothic SC ; Averia Serif Libre; Faster One; Chathura 
+                                    Cutive Mono
+                                    Lateef !!
+                        light: palanquin; inder; 
+        */
+    
+        font-family: 'Frank Ruhl Libre';
+        src: url('Frank_Ruhl_Libre/FrankRuhlLibre-Medium.ttf');
+        /*src: url('Frank_Ruhl_Libre/FrankRuhlLibre-Regular.ttf')  format('truetype');*/
+}
+*{
+    font-family: 'Frank Ruhl Libre';
+}
+body {
+    /*display-flex;*/
+
+}
+.alignCenter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container{
+    width: 100%;
+    border: 1 px solid;
+    margin: 0px;
+}
+.row{
+    width: 100%;
+    /*display: flex; 
+    flex-direction: row; 
+    justify-content: center; 
+    align-items- center;*/
+    
+    border: 1px dashed
+}
+
+input[type='checkbox']:not(:checked), 
+input[type="checkbox"]:checked{
+    opacity: 1;
+    position: static;
+    left: 0px; 
+}
+input[type='checkbox']:not(:checked):disabled, 
+input[type="checkbox"]:checked:disabled{
+    opacity: 0.3;
+    position: static;
+    left: 0px; 
+}
+a, button {
+    user-select: none;
+    -webkit-user-select: none;
+
+
+
+    height: 30px;
+    /*margin: 5px;
+    padding: 20px;*/
+
+
+    font-size: 25px;
+    text-decoration: none;
+    
+    border: none;
+}
+a, button:hover{
+    /*cursor- pointer;*/
+
+    /* h-shadow v-shadow blur-radius color|none|initial|inherit; */
+    text-shadow: 1px 1px 0px rgb(193, 193, 193);
+
+}
+a, button:disabled{
+    cursor: initial;  
+    color: rgb(200, 200, 200);
+    text-shadow: none;  
+}
+a:link, a:visited, a:active{
+    color: black;
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+select {
+    font-size: 20px;
+    border: 1px solid;
+    /*margin- 20px 10px;*/
+
+    text-align: center;
+    -webkit-text-align: center;
+    
+
+}
+
+h3, h4, h5, h6{
+    cursor: initial;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.vertical{
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.zero{
+    color: red;
+}
+.one{
+    color: orange;
+}
+.two{
+    color: #fff700;
+}
+.three{
+    color: limegreen;
+}
+.four{
+    color: powderblue;
+}
+.five{
+    color: dodgerblue;
+}
+.six{
+    color: #0040ff;
+}
