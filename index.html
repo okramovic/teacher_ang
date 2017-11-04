@@ -6,7 +6,7 @@
         
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet"       
-                href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
   
 
         <link rel="stylesheet"  href="./app/css/general.css" >
@@ -26,7 +26,7 @@
                 
                 <script src="./app/js/directives.js"></script>
 
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"                     rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
                 
     </head>
 <body >
@@ -193,7 +193,8 @@
                             </div>
                             
                             <div class="col s6">
-                                    <select ng-model="defaultType" ng-options="t for t in           testTypes" class="browser-default"
+                                    <select ng-model="defaultType" ng-options="t for t in testTypes" 
+                                            class="browser-default"
                                             ng-change="typeSelection(defaultType)">
                                     </select>                
                             </div>
@@ -204,7 +205,29 @@
                             <button ng-click="practice()">practice</button>
                         </div>
                         
-
+                        <div ng-show="screen == 'main'" style="margin-top: 30px;">
+                            <label>voice for {{lang1}}
+                                <input type="checkbox" ng-checked="voice1On"
+                                       ng-model="xxx" 
+                                       ng-change="voice1On = !voice1On">
+                            </label>
+                            <select class="browser-default" ng-model="defaultVoice1"
+                                    ng-options="voi.name +' '+ voi.lang for voi in voices"
+                                    ng-change="voice1Select(defaultVoice1.name)" >
+                                <!--option ng-repeat=" voi in voices"></option-->
+                            </select>
+                            <br>
+                            <label>voice for {{lang2}}
+                                <input type="checkbox" ng-checked="voice2On" 
+                                       ng-model="yyy" 
+                                       ng-click="voice2On = !voice2On">
+                            </label>
+                            <select class="browser-default" ng-model="defaultVoice2"
+                                    ng-options="voi.name + ' ' + voi.lang for voi in voices"
+                                    ng-change="voice2Select(defaultVoice2.name)">
+                                <!--option ng-repeat=" voi in voices"></option-->
+                            </select>
+                        </div>
                         
                     </div>    
                         <!--input ng-model="shared.string"-->
@@ -227,8 +250,11 @@
                         
                         <h4>vocabulary:</h4>
                     
-                        <vocabulary ascen="wAscen" wo="words" al="al"
-                            slct="slct" class="dictionary"></vocabulary>
+                        <vocabulary ascen="wAscen" words="words" al="al"
+                            slct="slct" max="words.length" len="words.length" 
+                            class="dictionary"
+                            ch="change"
+                            ></vocabulary>
 
         
                         <pre>{{ slct }}</pre>

@@ -12,31 +12,50 @@ app/*.directive('checkB',function(){
             }
     }
     
-}])*/.directive('vocabulary',function(){
+}])*/.directive('vocabulary',function($timeout){
     return {
             restrict: 'EA',
             replace: true,
             controller: 'teacherCtr',
-            scope:{
+            /*scope:{
                     wo: '=',
                     ch: '&',
                     ascen: '=',
                     al:'=',
-                    slct: '='
-            },  // | orderBy:w.lev:ascen    track by $index 
-            template: '<div ng-repeat="w in wo ">'+
+                    slct: '=',
+                    len: '=',
+                    max: '='
+            },*/  // | orderBy:w.lev:ascen    track by $index 
+            scope: {
+                words: '='
+                //,change: '&'
+                ,ch: '&'
+            },
+            template: '<div ng-repeat="w in words ">'+
 
 
-                                '<div  ng-if="$index % 10 ==0" '+
+                                '<div  ng-if="lastGroup($index) === false && $index % 10 === 0" '+
+
                                         'style="display: flex; align-items:center; justify-content: center"> ' +
                                         '{{$index+1}}.-{{$index+10}}.   '+
 
-                                        '<input type="checkbox" ng-model="idk"      ' +
-                                        'ng-checked="allchecked({{$index}}) == true"             ' +
+                                        '<label >'+
+                                        '<input  type="checkbox" class="browser-default" ng-model="idk"      ' +
+                                        //'ng-checked="allchecked({{$index}}) == true"             ' +
                                         'ng-change="change({{$index}},1)  ">' +
+                                        '</label>'  +
 
                                 '</div>' + 
 
+                                '<div ng-model="www" ng-if="lastGroup($index) === true && $index % 10 === 0"'+
+                                        '> {{$index+1}}.-{{words.length}}.'+
+
+                                        '<label >'+
+                                        '<input  type="checkbox" class="browser-default" ng-model="www"      ' +
+                                        //'ng-checked="allchecked({{$index}}) == true"             ' +
+                                        'ng-change="change({{$index}},1)  ">' +
+                                        '</label>'  +
+                                '</div>' +
 
                                 '<div  ng-model="wx"  '+
                                 'ng-class="{0: &quot;zero&quot;, 1: &quot;one&quot;,'+
@@ -44,9 +63,9 @@ app/*.directive('checkB',function(){
                                         ' 4: &quot;four&quot;, 5: &quot;five&quot;,'+
                                         ' 6: &quot;six&quot;}[w[2]]"'+
                                                 '>' +
-                                        '{{w[0]}} {{w[1]}} {{w[2]}}, index: {{$index}}'+
+                                        '{{w[0]}} {{w[1]}} {{w[2]}}'+
 
-                                        
+                                               // '<br> max {{words.length}} - {{max}}..'   +
                         '</div></div>' ,
             /* 
                         '<input  type="checkbox"  smt="{{$index}}" ' +
@@ -67,12 +86,47 @@ app/*.directive('checkB',function(){
                       '</div></div>'    */    
             
             link: function(scope, el, att){
-                //console.log("ascen",scope.ascen,"<<")
+                //console.log("att", att)
+                //console.log("change",scope.change)
                 //scope.w[2] = scope.wo[2]
                 scope.wx = true//scope.wo[2][2]
                 scope.idk = 1
                 scope.al = true
+                $timeout(function(){
+                scope.max = 9
+                })
+                //scope.len = 9
+                //console.log("len",scope.len,"<<")
+                //scope.change = change
+                /*function(){
+                        console.log('change');
+                }*/
+
+                scope.$watch('words', function(w){
+                        //alert('al' + scope.al + ' .')
+                        //console.log('w\n\n',w)
+                })
+
                 //scope.rev = false;
+                scope.$watch('len', function(wo){
+                        //console.log("wo", wo)
+                        //scope.len = 
+                        $timeout(function(){
+                                scope.max = wo//.length
+                        })
+                        //scope.$apply(function(){
+                                scope.max = wo
+                        //})
+                        
+                })
+                scope.$watch('max', function(fck){
+                                /*console.log('pipi', fck,"<")
+                                console.log("words",scope.wo,"<<")
+                                console.log("scope.max", scope.max)
+                                console.log("scope", scope)
+                                */
+                })
+
                 scope.$watch( 'ascen'
                                 //'wAscen'
                                 , function(ascen){
