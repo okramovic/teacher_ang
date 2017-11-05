@@ -43,13 +43,13 @@ app
                 //console.log('now', newWord)
         }
 })
-.controller('teacherCtr',['$scope','$timeout',
+.controller('teacherCtr',['$scope','$rootScope','$timeout',
                         '$window',
                         //'fileReader',
                         //'teacherService',
                         'exam', 'vocabfile', 'testShare',
 
-function($scope, $timeout, 
+function($scope, $rootScope, $timeout, 
                 $window,//fileReader//,teacherService,
         exam,vocabfile, testShare){
 
@@ -94,22 +94,34 @@ function($scope, $timeout,
                 }*/
 
 
+        
+            if (window.speechSynthesis) {
 
-            var synth = window.speechSynthesis;
-            var voices = []
-            setTimeout(function(){
-                voices = synth.getVoices();    
-                //console.log(voices)
+                var synth = window.speechSynthesis;
+                $scope.voices = []
 
-                var utterThis = new SpeechSynthesisUtterance('grüss gott grüss gott');
-                utterThis.voice = voices[6];
-                utterThis.lang = "de-DE"
-                utterThis.onend = function(){
-                        console.log('end speech')
-                }
-                //console.log(utterThis)
-                //synth.speak(utterThis);
-            }, 1000)
+                // promisify this
+                $timeout(function(){
+                        $scope.voices = synth.getVoices();    
+                        console.log($scope.voices)
+                        
+
+
+                        $scope.defaultVoice1 = $scope.voices[0]
+                        $scope.defaultVoice1Index = 0
+                        $scope.defaultVoice2Index = 6
+                        $scope.defaultVoice2 = $scope.voices[$scope.defaultVoice2Index]
+
+                        var utterThis = new SpeechSynthesisUtterance('grüss gott grüss gott');
+                        utterThis.voice = $scope.voices[6];
+                        utterThis.lang = "de-DE"
+                        utterThis.onend = function(){
+                                console.log('end speech')
+                        }
+                        //console.log(utterThis)
+                        //synth.speak(utterThis);
+                }, 1500)
+            }
             //console.log('digest check')
 
             var userFile = {}
@@ -127,7 +139,7 @@ function($scope, $timeout,
             }
             
             //$scope.
-            var loadLocalStorage = function(){
+            function loadLocalStorage(){
                 "use strict"
                         
                         let names = angular.fromJson(
@@ -188,7 +200,6 @@ function($scope, $timeout,
                         })
 
             } 
-            
 
             //$scope.
             var saveLocSto = function(newName,lang1, lang2,tosave){
@@ -293,7 +304,38 @@ function($scope, $timeout,
                 }
 
             }
+            $scope.deleteLSDict = function(dict, ind){
 
+                        if (confirm("sure to delete?\n\n" + dict)){
+
+                                
+
+                                let names = angular.fromJson(
+                                        $window.localStorage.getItem("userFileNames")
+                                )
+
+                                //console.log("names", names)
+                                
+                                names.splice(ind, 1)
+                                
+
+                                console.log("delete index", ind, names)
+                                //console.log("deleted", dict)
+
+                                // save new index of dicts && del the dict
+                                $window.localStorage.setItem("userFileNames",
+                                                              angular.toJson(names))
+                                $window.localStorage.removeItem(dict)
+                                
+                                
+                                $timeout(function(){
+                                        //$scope.storedDicts = $window.localStorage.getItem("userFileNames")
+                                        $scope.storedDicts.splice(ind, 1);
+                                        loadLocalStorage()
+                                })
+                        }
+                        else return null
+            }
 
             // when copy pasting
             $scope.uploadPasted =  function(txt){  //vocabfile.upload
@@ -379,6 +421,7 @@ function($scope, $timeout,
                                 
                         //})
                         $scope.$apply(function(){
+                                $scope.storedDicts.push(d.filename)
                                 $scope.words = d.words
                                 $scope.lang1 = d.langs.a
                                 $scope.lang2 = d.langs.b
@@ -425,6 +468,51 @@ function($scope, $timeout,
             $scope.slct = [],  
             $scope.p1
 
+            // voice business
+
+            $scope.voice1On = false
+            $scope.voice2On = true
+            $scope.defaultVoice1 = null
+            $scope.defaultVoice2 = null
+            $scope.voice1Switch = function(){
+                        $timeout(function(){
+                                $scope.voice1On = !$scope.voice1On
+
+            })}
+            $scope.voice2Switch = function(){
+                                console.log('now voice2', $scope.voice2On )
+                        $timeout(function(){
+                                $scope.voice2On = !$scope.voice2On
+                                console.log('now voice2', $scope.voice2On )
+            })}
+            $scope.voice1Select = function(v){
+                
+                                console.log("v", v)
+                                $timeout(function(){
+                                        $scope.voice1 = getVoiceIndex(v)
+                                        console.log("new voice1\n\n",v, $scope.voice1)
+                                })                                
+            }
+            $scope.voice2Select = function(v){
+
+                                console.log("v", v)
+                                $timeout(function(){
+                                        $scope.voice2 = getVoiceIndex(v)
+                                        console.log("new voice2\n\n",v, $scope.voice2)
+                                })
+            }
+            function getVoiceIndex(name){
+
+                        return $scope.voices.findIndex(function(voice){
+                                        //console.log(i, name, voice.name)
+
+                                        return name === voice.name
+                                })
+                        
+            }
+
+
+
             $scope.direction = 'ab',
                 //$scope.lang1 = 'cz', 
                 //$scope.lang2 = 'de'
@@ -437,13 +525,13 @@ function($scope, $timeout,
             $scope.defaultLength = $scope.lengths[1]
             $scope.testLength = $scope.lengths[1]
 
-            $scope.testTypes = ['repeat previous','checked ones','all words','unknown','newest']
-            $scope.defaultType = $scope.testTypes[2]
+            $scope.testTypes = ['repeat previous','newest','checked ones','all words','unknown']
+            $scope.defaultType = $scope.testTypes[1]
             $scope.testType = $scope.testTypes[2]
 
             $scope.updateWord = testShare.updateWord
             $scope.prepareExam = exam.prepareExam
-
+            $scope.previousQs = []
             
 
             $scope.getWords = testShare.getWords
@@ -482,7 +570,16 @@ function($scope, $timeout,
                         ]
                 //$scope.words = ["a","b","c"] //$scope.example
 
+                $scope.lastGroup = function(index){
 
+                        // return true to show only last group  $index - wo.length
+                        // return false to show all previous
+
+                        let len= $scope.words.length
+
+                        return index === Math.floor(len/10) * 10 //&& index % 10 === 0
+
+                }
 
 
                 $scope.loadExample = function(){ 
@@ -568,42 +665,45 @@ function($scope, $timeout,
 
                 $scope.practice = function practice(){
                         
-                        //let p1 = 
-                        
                         $scope.showWords = false
                         
 
                         new Promise(function(resolve,rej){
-                                var rslt = $scope.prepareExam($scope.testType, $scope.testLength, $scope.words)
-
-                                resolve(rslt)
-
+                                let rslt = $scope.prepareExam($scope.testType, $scope.testLength, $scope.words)
+                                                resolve(rslt)
                         })
                         .then(function(test){
                                 console.log('- - - - - - - - - - - - - -')
                                 console.log('new test questions arrived')
-                                //console.log(test[0], test[1])
                                 //console.log($scope.shared)
                                 
                                 $scope.shared = test
                                 $scope.setTest(test)
-
                                 $scope.mainScreen = false
-                                
 
-                                $scope.$parent.$broadcast('newTest')
+                                let voiceToSend = {
+                                                // defaultVoice1Index
+                                                v1on: $scope.voice1On,
+                                                v2on: $scope.voice2On,
+                                                v1: ($scope.voice1) ? $scope.voice1 : $scope.defaultVoice1Index,
+                                                v2: ($scope.voice2) ? $scope.voice2 : $scope.defaultVoice2Index
+                                }
+                                console.log('voiceToSend', voiceToSend)
+
+                                $rootScope//.$parent
+                                .$broadcast('newTest', voiceToSend)
+
+
                                 //console.log('$scope.screen', $scope.screen)
                                 $scope.$apply()
                                 $timeout(function(){
                                         $scope.screen = "test"
                                 })
-                                /*$scope.$on('newTest',function(ev,data){
-                                        console.log('ooooooooo o o o o o o oooooo')
-                                })*/
-                                //testShare.testQuestions
-                                //testShare.testQuestions = test
-                                //console.log('$scope.shared')
-                                //console.log(testShare.testQuestions)
+                                        
+                                        //testShare.testQuestions
+                                        //testShare.testQuestions = test
+                                        //console.log('$scope.shared')
+                                        //console.log(testShare.testQuestions)
 
                         })
                 }
@@ -729,6 +829,20 @@ function($scope, $timeout,
                         $scope.$parent.$broadcast('slct')
     
                 }
+                $scope.picked = function picked(x){
+
+
+                        
+
+                        let res = $scope.slct.findIndex(function(item){
+
+                                                return item === x
+                                  })
+                        //console.log('hi colors',x , res)
+
+                        if (res > -1) return true
+                        else return false
+                }
                 $scope.$on('checkBoxChange', function(ev, data){
 
                 })
@@ -774,15 +888,18 @@ function($scope, $timeout,
                 //console.log($scope.shared)
 
         }])
-.controller('test',['$scope','$timeout', 'exam','testShare',
-                function($scope,$timeout,exam,testShare){
+.controller('test',['$scope','$rootScope','$timeout', 'exam','testShare',
+                function($scope,$rootScope, $timeout,exam,testShare){
         
         
-        $scope.synth = window.speechSynthesis;
-        $scope.voices = []
-        setTimeout(function(){
-                $scope.voices = $scope.synth.getVoices();    
-        },1000)
+        if (window.speechSynthesis) {
+                $scope.synth = window.speechSynthesis;
+                $scope.voices = []
+
+                setTimeout(function(){
+                        $scope.voices = $scope.synth.getVoices();    
+                },1000)
+        }
 
         $scope.zen = false, $scope.showTest = false
         
@@ -841,8 +958,26 @@ function($scope, $timeout,
         })
 
         
-        $scope.$on('newTest',function(ev, data){
-                 
+        $scope.$on('newTest',function(ev, voiceData){
+                console.log($scope)
+                console.log("\n\n\nlistener count", $scope.$$listenerCount['newTest']) 
+                if ($scope.$$listenerCount['newTest']>1) 
+                    $scope.$$listenerCount['newTest'] = 1
+                
+
+                console.log('--------------------------------------')
+
+
+                if (window.speechSynthesis){
+                        $scope.voice1On = voiceData.v1on
+                        $scope.voice2On = voiceData.v2on
+                        $scope.voice1 = $scope.voices [voiceData.v1]
+                        $scope.voice2 = $scope.voices [voiceData.v2]
+                }
+
+                console.log("speeches: \n", $scope.voice1On, $scope.voice2On, 
+                                $scope.voice1, $scope.voice2)
+
                 $scope.localWords = $scope.getWords()
                 $timeout(function(){
                         //console.log('localWords', $scope.localWords)

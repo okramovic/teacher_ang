@@ -6,7 +6,7 @@
         
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet"       
-                href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
   
 
         <link rel="stylesheet"  href="./app/css/general.css" >
@@ -26,7 +26,7 @@
                 
                 <script src="./app/js/directives.js"></script>
 
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"                     rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
                 
     </head>
 <body >
@@ -64,32 +64,36 @@
                         <div ng-show="screen =='main'" 
                             ng-click="screenChange('initial')"
                             class="alignCenter">
-                                <i class="material-icons">first_page</i>    
+                                <i class="material-icons hvrb">first_page</i>    
                         </div>
 
                         <div ng-show="screen =='words'" 
                             ng-click="screenChange('main')"
                             class="alignCenter">
-                                <i class="material-icons">keyboard_arrow_left</i>
+                                <i class="material-icons hvrb">keyboard_arrow_left</i>
                         </div>
 
                         <div ng-show="screen == 'test'" 
                             ng-click="screenChange('test')"
                             class="alignCenter">
-                                <i class="material-icons">keyboard_arrow_left</i>
+                                <i class="material-icons hvrb">keyboard_arrow_left</i>
                         </div>
                     </div>
 
-                    <h4 ng-class="{test: 'titleDisabled', undefined: 'titleEnabled', initial: 'titleEnabled', words: 'titleEnabled', main: 'titleEnabled'}[screen]">the Teacher</h4>
+                    <h4 ng-class="{test: 'titleDisabled', undefined: 'titleEnabled', 
+                                    initial: 'titleEnabled', words: 'titleEnabled', 
+                                    main: 'titleEnabled'}[screen]">the Teacher</h4>
                     <!--  && screen != 'initial' -->
                     <div>
                         <div ng-hide="screen == undefined || screen == 'initial'"    
                             style="display: flex; align-items: center;
                                    border- 1px dashed ">
                             <!--label for="checkbox"></label-->
-                            <i ng-show="!zen" class="material-icons">location_city</i>
+                            <i ng-show="!zen" class="material-icons"
+                               ng-class="{test: 'titleDisabled'}[screen]" >location_city</i>
                             <!--i class="material-icons">brightness_2</i-->
-                            <i ng-show="zen" class="material-icons">filter_hdr</i>
+                            <i ng-show="zen" class="material-icons"
+                               ng-class="{test: 'titleDisabled'}[screen]">filter_hdr</i>
                             
                             
                             <label for="zen">
@@ -107,11 +111,19 @@
                     <div ng-show="hasLocalStorage() == true">
                         <div class="center vertical">
                                 <h5>previous dictionaries</h5>
-                                <div ng-repeat="dict in storedDicts" ng-model="dict">
+                                <div ng-repeat="dict in storedDicts" ng-model="dict" 
+                                     class="collection">
+
+                                    <div class="collection-item">
+                                        <button ng-click="loadLSDict(dict)">
+                                            {{dict}}
+                                        </button>
+                                        <button class="thumb-sized" 
+                                            ng-click="deleteLSDict(dict, $index)">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </div>
                                     
-                                    <button ng-click="loadLSDict(dict)">
-                                        use {{dict}}
-                                    </button>
                                 
                             </div>
                             <br>
@@ -174,9 +186,11 @@
                             <div class="col s6">
                                     <select class="browser-default"
                                             ng-model="defaultLength" 
-                                            ng-options="l + ' rounds' for l in lengths"
+                                            ng-options="l + ' rounds' disable when words.length < l
+                                                        for l in lengths"
                                             ng-change="lengthSelect(defaultLength)"
                                             >
+                                            
                                     </select>    
                             </div>
                                 
@@ -193,7 +207,10 @@
                             </div>
                             
                             <div class="col s6">
-                                    <select ng-model="defaultType" ng-options="t for t in           testTypes" class="browser-default"
+                                    <select ng-model="defaultType" ng-options="t for t in testTypes
+                                            " 
+                                            class="browser-default"
+                                            
                                             ng-change="typeSelection(defaultType)">
                                     </select>                
                             </div>
@@ -204,7 +221,29 @@
                             <button ng-click="practice()">practice</button>
                         </div>
                         
-
+                        <div ng-show="screen == 'main'" style="margin-top: 30px;">
+                            <label>voice for {{lang1}}
+                                <input type="checkbox" ng-checked="voice1On"
+                                       ng-model="xxx" 
+                                       ng-change="voice1On = !voice1On">
+                            </label>
+                            <select class="browser-default" ng-model="defaultVoice1"
+                                    ng-options="voi.name +' '+ voi.lang for voi in voices"
+                                    ng-change="voice1Select(defaultVoice1.name)" >
+                                <!--option ng-repeat=" voi in voices"></option-->
+                            </select>
+                            <br>
+                            <label>voice for {{lang2}}
+                                <input type="checkbox" ng-checked="voice2On" 
+                                       ng-model="yyy" 
+                                       ng-click="voice2On = !voice2On">
+                            </label>
+                            <select class="browser-default" ng-model="defaultVoice2"
+                                    ng-options="voi.name + ' ' + voi.lang for voi in voices"
+                                    ng-change="voice2Select(defaultVoice2.name)">
+                                <!--option ng-repeat=" voi in voices"></option-->
+                            </select>
+                        </div>
                         
                     </div>    
                         <!--input ng-model="shared.string"-->
@@ -215,7 +254,7 @@
                     
                 </div>
 
-                <div ng-show="screen == 'words'">
+                <div ng-if="screen == 'words'">
                         
                         <!-- ng-show="!showWords" -->
                         <div class="butRow" style="border: 1px solid gray">
@@ -227,8 +266,11 @@
                         
                         <h4>vocabulary:</h4>
                     
-                        <vocabulary ascen="wAscen" wo="words" al="al"
-                            slct="slct" class="dictionary"></vocabulary>
+                        <vocabulary ascen="wAscen" words="words" al="al"
+                            slct="slct" max="words.length" len="words.length" 
+                            class="dictionary"
+                            ch="change"
+                            ></vocabulary>
 
         
                         <pre>{{ slct }}</pre>

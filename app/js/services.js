@@ -82,7 +82,23 @@ app.service('exam', ['$timeout',function($timeout){
                         console.log(this)
 
                 }
+
+                let from, to;
                 
+                if (dir==='ab'){ from = 0; to = 1
+                } else if (dir==='ba'){ from = 1; to = 0 }  
+
+
+                console.log("voice2On?", this.voice2On )
+                if (this.voice2On){
+
+                        let toSay = curWord.word[to]
+                        let utterThis = new SpeechSynthesisUtterance(toSay);
+                        utterThis.voice = this.voice2//zis.voices[64];
+                        //utterThis.onstart = function(){}
+                        //utterThis.lang = "de-DE"
+                        this.synth.speak(utterThis);
+                }
                 /*else if (idk && !this.zen){
                        // console.log('idk 1, no zen')
                         // speak, bad point ++, change rating, next round
@@ -99,32 +115,21 @@ app.service('exam', ['$timeout',function($timeout){
 
                 }*/
                                 
-                setTimeout(function(){
-                        
-                        //console.log('this.nextGo____', this.nextGo)
-                },2000)
-                
 
                 this.p2 = new Promise(function(resolve, reject){
                             
                         //console.log("zis? >>", zis)
 
-                        let from, to;
-                            
-                        if (dir==='ab'){ from = 0; to = 1
-                        } else if (dir==='ba'){ from = 1; to = 0 }  
+                        
 
 
                             var res = { dir: dir}
                             res.res = zis.correct(input,curWord,round,to,from) 
 
                             
-                        let toSay = curWord.word[to]
-                            let utterThis = new SpeechSynthesisUtterance(toSay);
-                            utterThis.voice = zis.voices[64];
-                            utterThis.lang = "de-DE"
+                        
 
-                            utterThis.onstart = function(){}
+                            
 
                         /* if okay answer >> animate, 
                                              after she speaks, next round
@@ -135,19 +140,19 @@ app.service('exam', ['$timeout',function($timeout){
                                              on next click newround
 
                         */
-                        utterThis.onend = function(){
+                        //utterThis.onend = function(){
                                 //setTimeout(function(){
                                     //console.log('end speech')  
                                     
                                 //},500)     
-                        }    
+                        //}    
 
                         if (res.res === 2) { 
                                 //console.log('anim start', res.res)
                                 zis.answerHide = true
                                 zis.animateOk(function(){
 
-                                        utterThis.onend = function(){
+                                       // utterThis.onend = function(){
                                                 console.log('end speech')    
 
                                                 zis.timeout(function(){
@@ -155,7 +160,7 @@ app.service('exam', ['$timeout',function($timeout){
                                                         resolve(res.res)
                                                 },500)
                                                 
-                                        }
+                                        //}
                                         
                                 })
                         } else if (res.res === 1 && !zis.zen){
@@ -171,7 +176,7 @@ app.service('exam', ['$timeout',function($timeout){
 
                                 zis.animateOk(function(){
 
-                                        utterThis.onend = function(){
+                                        //utterThis.onend = function(){
                                                 console.log('end speech')    
 
                                                 zis.timeout(function(){
@@ -179,7 +184,7 @@ app.service('exam', ['$timeout',function($timeout){
                                                         resolve(res.res)
                                                 },500)
                                                 
-                                        }
+                                        //}
                                 })
 
 
@@ -221,7 +226,7 @@ app.service('exam', ['$timeout',function($timeout){
                         
 
                         //console.log(utterThis)
-                        zis.synth.speak(utterThis);
+                        //zis.synth.speak(utterThis);
                             
                             
 
@@ -660,6 +665,18 @@ function newRound(string){
         this.user.input = ""
 
         if (this.round===0) this.$apply()
+
+        console.log('this.voice1On',this.voice1On, this.testWord)
+
+        if (this.voice1On){
+
+                        let toSay = this.testWord//curWord.word[to]
+                        let utterThis = new SpeechSynthesisUtterance(toSay);
+                        utterThis.voice = this.voice1//zis.voices[64];
+                        //utterThis.onstart = function(){}
+                        //utterThis.lang = "de-DE"
+                        this.synth.speak(utterThis);
+                }
         
 }
 function prepareExam (type,len,words,cb){

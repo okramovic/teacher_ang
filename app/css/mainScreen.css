@@ -27,9 +27,27 @@ h4{
 
     text-align: center;
 }
+#vocab{
+    
+}
+#vocab .word{
+    width: 80%;
+    margin: auto;
+}
 .titleEnabled{
     color: black
 }
 .titleDisabled{
     color: rgb(200, 200, 200);
+    cursor: initial;
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.picked{
+    
+    position: relative;
+    left: 20px;
+    background-color: powderblue;
 }
