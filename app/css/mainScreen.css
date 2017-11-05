@@ -33,6 +33,8 @@ h4{
 #vocab .word{
     width: 80%;
     margin: auto;
+    font-size: 18px;
+
 }
 .titleEnabled{
     color: black
@@ -47,7 +49,7 @@ h4{
 
 .picked{
     
-    position: relative;
-    left: 20px;
-    background-color: powderblue;
+    /*position: relative;
+    left: 20px;*/
+    background-color: rgb(201, 244, 249);
 }

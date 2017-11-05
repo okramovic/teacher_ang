@@ -17,6 +17,7 @@
 }
 body {
     /*display-flex;*/
+    height: 100%;
 
 }
 .alignCenter{
@@ -55,12 +56,16 @@ body {
 }
 .row{
     width: 100%;
+    
+
+    margin: 0px;
+    padding: 0px;
     /*display: flex; 
     flex-direction: row; 
     justify-content: center; 
     align-items- center;*/
     
-    border: 1px dashed
+    /*border- 1px dashed*/
 }
 
 i{
@@ -96,7 +101,7 @@ a, button {
     user-select: none;
     -webkit-user-select: none;
 
-
+    background-color: transparent;
 
     height: 30px;
     /*margin: 5px;
@@ -119,6 +124,9 @@ a, button:disabled{
     cursor: initial;  
     color: rgb(200, 200, 200);
     text-shadow: none;  
+}
+button:active, button:focus {
+    background-color: transparent;
 }
 a:link, a:visited, a:active{
     color: black;

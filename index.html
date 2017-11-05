@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html ng-app='teacherApp'>
+<html >
     <head>
         <meta charset="utf8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>teacher v1</title>
         
         <!-- Compiled and minified CSS -->
-        <link rel="stylesheet"       
-        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-  
+        <!--link rel="stylesheet"       
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"-->
+        <link rel="stylesheet"  href="./app/libs/materialize.min.css">
 
         <link rel="stylesheet"  href="./app/css/general.css" >
         <link rel="stylesheet"  href="./app/css/testDiv.css" >
@@ -15,7 +16,8 @@
         <link rel="stylesheet"  href="./app/css/animations.css" >
         
                 <!--script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script-->
-                <script src="https://opensource.keycdn.com/angularjs/1.6.6/angular.min.js"></script>
+                <!--script src="https://opensource.keycdn.com/angularjs/1.6.6/angular.min.js"></script-->
+                <script src="./app/libs/angular.min.1.6.6.js"></script>
                 <script src="./app/libs/angular-animate.min.js" ></script>
 
 
@@ -29,16 +31,16 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
                 
     </head>
-<body >
+<body ng-app='teacherApp' style="border- 1px solid red">
         <!--div class="card red darken-4">
             <div class="card-content">
                 lorem dolor ipsum samet
             </div>
         </div-->
-    <div class="row" style="">
+    <div class="row" style="height: 100%">
         <div class="col m2 l3"></div>
         <div class="col s12 m8 l6" 
-            style=" border- 3px dotted blue; 
+            style=" 
                     display: flex; 
                     flex-direction: column; 
                     
