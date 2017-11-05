@@ -527,7 +527,8 @@ function($scope, $rootScope, $timeout,
 
             $scope.testTypes = ['repeat previous','newest','checked ones','all words','unknown']
             $scope.defaultType = $scope.testTypes[1]
-            $scope.testType = $scope.testTypes[2]
+            $scope.testType = $scope.defaultType
+            //console.log('$scope.defaultType', $scope.defaultType)
 
             $scope.updateWord = testShare.updateWord
             $scope.prepareExam = exam.prepareExam
