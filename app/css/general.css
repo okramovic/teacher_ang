@@ -29,6 +29,30 @@ body {
     border: 1 px solid;
     margin: 0px;
 }
+.collection{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    border: none;
+}
+.collection-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 80%;
+    margin: auto;
+
+    border: 1px dashed;
+}
+.collection-item .thumb-sized{
+    
+    min-width: 48px;
+    min-height: 48px;
+}
 .row{
     width: 100%;
     /*display: flex; 
@@ -37,6 +61,23 @@ body {
     align-items- center;*/
     
     border: 1px dashed
+}
+
+i{
+    user-select: none;
+    -webkit-user-select: none;
+}
+.hvrb{
+    
+    
+}
+.hvrb:hover{
+    text-shadow: 1px 1px 0px rgb(193, 193, 193);
+    cursor: pointer;
+}
+label{
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 input[type='checkbox']:not(:checked), 

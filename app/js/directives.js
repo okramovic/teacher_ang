@@ -31,7 +31,7 @@ app/*.directive('checkB',function(){
                 //,change: '&'
                 ,ch: '&'
             },
-            template: '<div ng-repeat="w in words ">'+
+            template: '<div id="vocab" ng-repeat="w in words " class="">'+
 
 
                                 '<div  ng-if="lastGroup($index) === false && $index % 10 === 0" '+
@@ -57,7 +57,20 @@ app/*.directive('checkB',function(){
                                         '</label>'  +
                                 '</div>' +
 
-                                '<div  ng-model="wx"  '+
+                                '<div class="word" ng-model="w[2]"  '+
+                                'ng-class="{&quot;zero&quot;: w[2]==0, '+
+
+                                        ' &quot;one&quot;   : w[2] == 1, '+
+                                        ' &quot;two&quot;   : w[2] == 2, '+
+                                        ' &quot;three&quot; : w[2] == 3, '+
+                                        ' &quot;four&quot;  : w[2] == 4, '+
+                                        ' &quot;five&quot;  : w[2] == 5, '+
+                                        ' &quot;six&quot;   : w[2] == 6, '+
+                                        ' &quot;picked&quot;: picked($index)}"'+
+                                                '>' +
+                                        '{{w[0]}} {{w[1]}} {{w[2]}}'+
+                                        
+                                /*'<div  ng-model="wx"  '+
                                 'ng-class="{0: &quot;zero&quot;, 1: &quot;one&quot;,'+
                                         ' 2: &quot;two&quot; , 3: &quot;three&quot;,'+
                                         ' 4: &quot;four&quot;, 5: &quot;five&quot;,'+
@@ -65,8 +78,9 @@ app/*.directive('checkB',function(){
                                                 '>' +
                                         '{{w[0]}} {{w[1]}} {{w[2]}}'+
 
-                                               // '<br> max {{words.length}} - {{max}}..'   +
-                        '</div></div>' ,
+                                               // '<br> max {{words.length}} - {{max}}..'   +*/
+                                '</div>'+
+                        '</div>' ,
             /* 
                         '<input  type="checkbox"  smt="{{$index}}" ' +
                                 ' ng-checked="slct.indexOf({{$index}}) > -1"    ' +        
@@ -101,7 +115,16 @@ app/*.directive('checkB',function(){
                 /*function(){
                         console.log('change');
                 }*/
-
+                /*scope.picked = picked
+                function picked(x){
+                        console.log('hi colors')
+                        if (x % 2 === 0) return true
+                        else return false
+                }*/
+                scope.$watch('slct', function(sl){
+                        //alert('al' + scope.al + ' .')
+                        console.log('*****  sl\n',sl)
+                })
                 scope.$watch('words', function(w){
                         //alert('al' + scope.al + ' .')
                         //console.log('w\n\n',w)

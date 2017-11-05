@@ -1,0 +1,36 @@
+
+
+- - - - - - - - - Teacher - TO DO  - - - - - - - — - - - -
+
+- decide what’s most important things to publish prototype
+
+
+
+- i can do checked-ones test
+- i can have test from unknown words
+
+
+- add “repeat previous test” functionaility
+
+
+
+- round counter doesnt show wierd numbers /gets updated when appropriate
+- if “from” voice speaks, it says first word only once
+
+- i can download txt file with my current vocab
+- when finished test, test screen fades away and after that my score fades-in
+
+- if there’s duplicates in newly added dict, clear them
+
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - — - -  done   - - - - - - - - - - - -
+
+- i can set both voices for test
+- disable text selection for labels/checkboxes
+- during test, zen icon with city/landscape is gray (disabled)
+- autoselect “newest” test type on app load
+- disable round numbers in select when my vocab isn’t that long
+- highlight selected words in vocab
+- add “delete vocab” from local storage functionality

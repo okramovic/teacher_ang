@@ -139,7 +139,7 @@ function($scope, $rootScope, $timeout,
             }
             
             //$scope.
-            var loadLocalStorage = function(){
+            function loadLocalStorage(){
                 "use strict"
                         
                         let names = angular.fromJson(
@@ -304,7 +304,38 @@ function($scope, $rootScope, $timeout,
                 }
 
             }
+            $scope.deleteLSDict = function(dict, ind){
 
+                        if (confirm("sure to delete?\n\n" + dict)){
+
+                                
+
+                                let names = angular.fromJson(
+                                        $window.localStorage.getItem("userFileNames")
+                                )
+
+                                //console.log("names", names)
+                                
+                                names.splice(ind, 1)
+                                
+
+                                console.log("delete index", ind, names)
+                                //console.log("deleted", dict)
+
+                                // save new index of dicts && del the dict
+                                $window.localStorage.setItem("userFileNames",
+                                                              angular.toJson(names))
+                                $window.localStorage.removeItem(dict)
+                                
+                                
+                                $timeout(function(){
+                                        //$scope.storedDicts = $window.localStorage.getItem("userFileNames")
+                                        $scope.storedDicts.splice(ind, 1);
+                                        loadLocalStorage()
+                                })
+                        }
+                        else return null
+            }
 
             // when copy pasting
             $scope.uploadPasted =  function(txt){  //vocabfile.upload
@@ -390,6 +421,7 @@ function($scope, $rootScope, $timeout,
                                 
                         //})
                         $scope.$apply(function(){
+                                $scope.storedDicts.push(d.filename)
                                 $scope.words = d.words
                                 $scope.lang1 = d.langs.a
                                 $scope.lang2 = d.langs.b
@@ -436,6 +468,8 @@ function($scope, $rootScope, $timeout,
             $scope.slct = [],  
             $scope.p1
 
+            // voice business
+
             $scope.voice1On = false
             $scope.voice2On = true
             $scope.defaultVoice1 = null
@@ -477,6 +511,8 @@ function($scope, $rootScope, $timeout,
                         
             }
 
+
+
             $scope.direction = 'ab',
                 //$scope.lang1 = 'cz', 
                 //$scope.lang2 = 'de'
@@ -489,13 +525,13 @@ function($scope, $rootScope, $timeout,
             $scope.defaultLength = $scope.lengths[1]
             $scope.testLength = $scope.lengths[1]
 
-            $scope.testTypes = ['repeat previous','checked ones','all words','unknown','newest']
-            $scope.defaultType = $scope.testTypes[2]
+            $scope.testTypes = ['repeat previous','newest','checked ones','all words','unknown']
+            $scope.defaultType = $scope.testTypes[1]
             $scope.testType = $scope.testTypes[2]
 
             $scope.updateWord = testShare.updateWord
             $scope.prepareExam = exam.prepareExam
-
+            $scope.previousQs = []
             
 
             $scope.getWords = testShare.getWords
@@ -792,6 +828,20 @@ function($scope, $rootScope, $timeout,
                         
                         $scope.$parent.$broadcast('slct')
     
+                }
+                $scope.picked = function picked(x){
+
+
+                        
+
+                        let res = $scope.slct.findIndex(function(item){
+
+                                                return item === x
+                                  })
+                        //console.log('hi colors',x , res)
+
+                        if (res > -1) return true
+                        else return false
                 }
                 $scope.$on('checkBoxChange', function(ev, data){
 
