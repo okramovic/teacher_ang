@@ -191,7 +191,7 @@
                                             ng-model="defaultLength" 
                                             ng-options="l + ' rounds' disable when words.length < l
                                                         for l in lengths"
-                                            ng-disabled="slct.length>0 && selectedType === 'checked ones'"
+                                            ng-disabled="(slct.length>0 && selectedType === 'checked ones') || selectedType == 'repeat previous'"
                                             ng-change="lengthSelect(defaultLength)"
                                             >
                                             
@@ -212,7 +212,7 @@
                             
                             <div class="col s6">
                                     <select ng-model="selectedType" 
-                                    ng-options="t disable when (t ==='repeat previous' && previousTest.length<1) ||
+                                    ng-options="t disable when (t ==='repeat previous' && getPrevTest()=== null) ||
                                                 (t==='checked ones' && slct.length<1) for t in testTypes"
 
                                         class="browser-default"
@@ -289,7 +289,7 @@
             </div>
 
             
-            <div id="testScreen" ng-controller="test" ng-show="screen == 'test'" >
+            <div id="testScreen" ng-controller="testCtrl" ng-show="screen == 'test'" >
                     <!--shared:{{testQuestions}}-->
                     
                 <div id="testField" ng-show="showTest">

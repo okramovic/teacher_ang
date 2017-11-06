@@ -16,7 +16,7 @@ app/*.directive('checkB',function(){
     return {
             restrict: 'EA',
             replace: true,
-            controller: 'teacherCtr',
+            //controller: 'teacherCtr',
             /*scope:{
                     wo: '=',
                     ch: '&',
@@ -204,7 +204,7 @@ app/*.directive('checkB',function(){
 .directive('inpFocus', ['$timeout', function($timeout){
         return{
                 restrict: 'A',
-                controller: 'test',
+                //controller: 'testCtrl',
                 //scope:{
                         //blr: '='
                 //},
@@ -261,7 +261,7 @@ app/*.directive('checkB',function(){
         return{
                 restrict: 'A',
                 //require: 'ngModel',
-                controller: 'teacherCtr',       // ng-change="upFile(file)"
+                //controller: 'teacherCtr',       // ng-change="upFile(file)"
                 /*scope:{
                         //onSelect: '&',
                         //fileSelect: '@',

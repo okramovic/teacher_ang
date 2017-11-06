@@ -5,17 +5,12 @@
 - decide what’s most important things to publish prototype
 
 
-
-- add “repeat previous test” functionaility
-
-
-
 - round counter doesnt show wierd numbers /gets updated when appropriate
-- if “from” voice speaks, it says first word only once
-
 - i can download txt file with my current vocab
 - when finished test, test screen fades away and after that my score fades-in
 
+
+not that important? try
 - if there’s duplicates in newly added dict, clear them
 
 
@@ -35,3 +30,6 @@
 - i can do checked-ones test
 - i can have test from unknown words
 - wierd not focusing repaired by timeout
+- if “from” voice speaks, it says first word only once
+- when copy/pasting - it stores lang line twice - repair to only once
+- add “repeat previous test” functionaility

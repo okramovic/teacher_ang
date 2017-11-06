@@ -24,6 +24,18 @@ app
 
                 //console.log(";;;;;;;;;   this.shared words", shared.words)
         }
+        this.setPrevTest = function(test){
+                shared.prevTest = test
+        }
+        this.getPrevTest = function(){
+                if (Array.isArray(shared.prevTest) && shared.prevTest.length>0){
+                        //alert ('there is previous test')
+                        return shared.prevTest
+                }
+                
+                else return null
+
+        }
         this.setVal = function(val){
                 idk = val
         }
@@ -202,7 +214,7 @@ function($scope, $rootScope, $timeout,
             } 
 
             //$scope.
-            var saveLocSto = function(newName,lang1, lang2,tosave){
+            function saveLocSto(newName,lang1, lang2,save){
                         "use strict"
 
                         
@@ -210,18 +222,17 @@ function($scope, $rootScope, $timeout,
                         //   look for this name in filenames storage
                         //      if its not there set it
                         //      if its there..
-                if (newName && lang1 && lang2 && Array.isArray(tosave) && tosave.length>0){
+                if (newName && lang1 && lang2 && Array.isArray(save) && save.length>0){
 
                         console.log(" can save, have all data")
-                        //console.log("is array?", Array.isArray(WORDS))
+
                         let savedFilenames = $window.localStorage.getItem("userFileNames")
                         
 
-                        const WORDS = mergeToSave([lang1, lang2], tosave)
+                        const toSave = mergeToSave([lang1, lang2], save)
 
                         //x.splice(0,0, [lang1, lang2] )
-                        //const WORDS = x
-                        console.log('data to save \n\n', WORDS)
+                        console.log('data to save \n\n', toSave)
 
                         if (!savedFilenames){
 
@@ -233,13 +244,13 @@ function($scope, $rootScope, $timeout,
                                 console.log(  angular.toJson(names)  )
 
                                 $window.localStorage.setItem(newName.toString(),
-                                        angular.toJson( WORDS )
+                                        angular.toJson( toSave )
                                 )
                                 // $scope.words.unshift( [lang1, lang2] )
                                 // angular.toJson()
-                                console.log("saving, words" , WORDS)
+                                console.log("saving, words" , toSave)
                                 //console.log("saving, words" , $scope.words)
-                                //console.log(  WORDS  )
+                                
 
 
                         } else if (savedFilenames){
@@ -258,17 +269,6 @@ function($scope, $rootScope, $timeout,
 
                                 }
                                 console.log("is this file there?", isThere)
-
-                                
-
-                                //let contentToStore = $scope.words.unshift( [lang1, lang2] )
-                                //console.log('$scope.words\n', $scope.words)
-                                //console.log('$scope.words\n', [lang1, lang2] )
-                                
-                                //console.log('contentToStore\n', $scope.words.unshift([lang1, lang2]) )
-                                //console.log('contentToStore\n', tosave )
-                                
-
                                
 
                                 if (!isThere) {
@@ -283,20 +283,18 @@ function($scope, $rootScope, $timeout,
                                         console.log("new filename saved to local storage", newName.toString() )
 
                                         $window.localStorage.setItem(newName.toString(),
-                                                angular.toJson( WORDS )
+                                                angular.toJson( toSave )
                                         )
 
-                                        console.log("local storage file updated",
-
-                                                newName.toString(),WORDS.length)
+                                        console.log("local storage file updated", newName.toString(),toSave.length)
 
 
                                 } else if (isThere)
                                 
                                         $window.localStorage.setItem(newName.toString(),
-                                                angular.toJson( WORDS )
+                                                angular.toJson( toSave )
                                         )
-                                        console.log("local storage file updated")//,$scope.words.length)
+                                        console.log("local storage file updated")
 
 
 
@@ -379,8 +377,8 @@ function($scope, $rootScope, $timeout,
                                         
                         },0)
                         //$scope.
-                        saveLocSto(userFile.currentFilename, $scope.lang1, $scope.lang2, //WORDS
-                                mergeToSave([ $scope.lang1, $scope.lang2 ],                               parseText(txt) )
+                        saveLocSto(userFile.currentFilename, $scope.lang1, $scope.lang2, WORDS
+                                //mergeToSave([ $scope.lang1, $scope.lang2 ],                               parseText(txt) )
                         )
             }
 
@@ -514,7 +512,7 @@ function($scope, $rootScope, $timeout,
 
             //let arrAA = [1,2,3]
             //let arrBB = [...arrAA]
-
+            console.log("ahoooj")
 
             $scope.direction = 'ab',
                 //$scope.lang1 = 'cz', 
@@ -536,11 +534,13 @@ function($scope, $rootScope, $timeout,
 
             $scope.updateWord = testShare.updateWord
             $scope.prepareExam = exam.prepareExam
-            $scope.previousTest = []
+            //$scope.previousTest = []
             
 
             $scope.getWords = testShare.getWords
             $scope.setWords = testShare.setWords
+            $scope.setPrevTest = testShare.setPrevTest 
+            $scope.getPrevTest = testShare.getPrevTest 
 
                 $scope.wAscen = true    
                 $scope.$watch('wAscen', function(){
@@ -678,6 +678,7 @@ function($scope, $rootScope, $timeout,
 
                         new Promise(function(resolve,rej){
                                 let rslt = $scope.prepareExam($scope.selectedType, $scope.testLength, $scope.words)
+                                $scope.setPrevTest(rslt)
 
                                 resolve(rslt)
                         })
@@ -904,7 +905,7 @@ function($scope, $rootScope, $timeout,
                 //console.log($scope.shared)
 
         }])
-.controller('test',['$scope','$rootScope','$timeout', 'exam','testShare',
+.controller('testCtrl',['$scope','$rootScope','$timeout', 'exam','testShare',
                 function($scope,$rootScope, $timeout,exam,testShare){
         
         
@@ -973,65 +974,74 @@ function($scope, $rootScope, $timeout,
                 $scope.blur = false; 
                                    
         })
+        //console.log($scope)
+        //console.log("\n\n\nlistener count", $scope.$$listenerCount['newTest']) 
+        //if ($scope.$$listenerCount['newTest']===2) $scope.$$listenerCount['newTest']=1
 
-        
+        //let newTestCounter = 0
         $scope.$on('newTest',function(ev, voiceData){
-                console.log($scope)
+                //newTestCounter++
+                //console.log('newTestCounter', newTestCounter)
                 console.log("\n\n\nlistener count", $scope.$$listenerCount['newTest']) 
-                //if ($scope.$$listenerCount['newTest']>1) 
-                //    $scope.$$listenerCount['newTest'] = 1
-                
+                //if ($scope.$$listenerCount['newTest']>1) {
+                //        $scope.$$listenerCount['newTest']=1
+                //}
+                        console.log('--------------------------------------')
 
-                console.log('--------------------------------------')
+                        if (window.speechSynthesis){
+                                $timeout(function(){
+                                        $scope.voice1On = voiceData.v1on
+                                        $scope.voice2On = voiceData.v2on
+                                        $scope.voice1 = $scope.voices[voiceData.v1]
+                                        $scope.voice2 = $scope.voices[voiceData.v2]
 
+                                        //alert('ahoj');
+                                        //alert("speeches: \n" + $scope.voice1On +" "+ $scope.voice2On + "\n" + 
+                                        //$scope.voice1.name + "\n" + $scope.voice2.name)
+                                })
+                                
+                        }
+                        
 
-                if (window.speechSynthesis){
+                        console.log("speeches: \n", $scope.voice1On, $scope.voice2On, 
+                                        $scope.voice1, $scope.voice2)
+
+                        
+
                         $timeout(function(){
-                                $scope.voice1On = voiceData.v1on
-                                $scope.voice2On = voiceData.v2on
-                                $scope.voice1 = $scope.voices[voiceData.v1]
-                                $scope.voice2 = $scope.voices[voiceData.v2]
+                                //console.log('localWords', $scope.localWords)
+                                $scope.localWords = $scope.getWords()
 
-                                //alert('ahoj');
-                                //alert("speeches: \n" + $scope.voice1On +" "+ $scope.voice2On + "\n" + 
-                                //$scope.voice1.name + "\n" + $scope.voice2.name)
+
+                                $scope.oks = 0, $scope.bads = 0, $scope.feedback = []
+                                $scope.round = 0
+                
+                                //$scope.blur = true
+                                $scope.changeNextGo('go')
+                                $scope.finalResult = 0
+
+                                $scope.screen = 'test'
+                                $scope.showTest = true
+
+                                $scope.testQuestions = $scope.getQuestions()
+                                //console.log('$scope.testQuestions', $scope.testQuestions) //[$scope.round]
+                                console.log('$scope.testQuestions', $scope.testQuestions[$scope.round])
+
+                                $scope.currIndex = $scope.testQuestions[$scope.round].ind
+
+                                console.log($scope.round+1, " vs ", $scope.testQuestions.length)
+                                
+                                $scope.newRound('first')
                         })
                         
-                }
-                
+                        console.log('|||||    zen? ',$scope.zen)
 
-                console.log("speeches: \n", $scope.voice1On, $scope.voice2On, 
-                                $scope.voice1, $scope.voice2)
+                //}
 
                 
 
-                $timeout(function(){
-                        //console.log('localWords', $scope.localWords)
-                        $scope.localWords = $scope.getWords()
 
-
-                        $scope.oks = 0, $scope.bads = 0, $scope.feedback = []
-                        $scope.round = 0
-        
-                        //$scope.blur = true
-                        $scope.changeNextGo('go')
-                        $scope.finalResult = 0
-
-                        $scope.screen = 'test'
-                        $scope.showTest = true
-
-                        $scope.testQuestions = $scope.getQuestions()
-                        //console.log('$scope.testQuestions', $scope.testQuestions) //[$scope.round]
-                        console.log('$scope.testQuestions', $scope.testQuestions[$scope.round])
-
-                        $scope.currIndex = $scope.testQuestions[$scope.round].ind
-
-                        console.log($scope.round+1, " vs ", $scope.testQuestions.length)
-                        
-                        $scope.newRound('first')
-                })
                 
-                console.log('|||||    zen? ',$scope.zen)
                 
                 //alert(JSON.stringify(data))
                 

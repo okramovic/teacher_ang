@@ -842,6 +842,32 @@ function prepareExam (type,len,words,cb){
                         console.log('questions', questions)
                         return questions
 
+                } else if (type === 'repeat previous'){
+
+                        let prev = this.getPrevTest()
+                        console.log('\n\n\nprevious questions',prev)
+
+                        // change the order of questions so its different from previous one
+                        
+                        for (let i=0;i<prev.length; i++){
+                                            
+                            let found = false
+                        
+                            while(!found) {
+                        
+                                let ind = Math.floor(Math.random()*prev.length)
+                                        //console.log(ind, taken.indexOf(ind));
+                        
+                                if (taken.indexOf(ind)=== -1) {
+                                            taken.push(ind);
+                                            questions.push( prev[ind] );
+                                            found = true;
+                                } 
+                            } 
+                        } 
+                        console.log('new questions', questions)
+                        return questions
+
                 }
     
                 // 'repeat previous','checked ones','everything','unknown','newest']
