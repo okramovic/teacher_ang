@@ -123,7 +123,7 @@ app/*.directive('checkB',function(){
                 }*/
                 scope.$watch('slct', function(sl){
                         //alert('al' + scope.al + ' .')
-                        console.log('*****  sl\n',sl)
+                        //console.log('*****  sl\n',sl)
                 })
                 scope.$watch('words', function(w){
                         //alert('al' + scope.al + ' .')
@@ -216,26 +216,28 @@ app/*.directive('checkB',function(){
                         
 
                         
-                        el[0].focus()
+                        //el[0].focus()
                         //el.focus()
                         //console.log(attr)
                         scope.$watch('blur', function(idk){
                                 //alert('halo')
 
                                 
-                                if (scope.blur)
+                                if (scope.blur){
                                         //console.log("-- blur 111 ",scope.blur)
-                                        //console.log("el0",el[0])
+                                        console.log('focus')
                                         $timeout(function(){
                                                 el[0].focus()
-                                        })
-
-                                else if (!scope.blur) 
+                                        },500)
+                                }
+                                else if (!scope.blur) {
+                                        console.log('blur')
                                         $timeout(function(){
-                                                console.log("-- blur 222 ",scope.blur)
+                                                //console.log("-- blur 222 ",scope.blur)
         
                                                 el[0].blur()
-                                })
+                                        })
+                                }
                                 else alert('else')
                         },true)
 

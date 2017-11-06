@@ -103,7 +103,7 @@ function($scope, $rootScope, $timeout,
                 // promisify this
                 $timeout(function(){
                         $scope.voices = synth.getVoices();    
-                        console.log($scope.voices)
+                        //console.log($scope.voices)
                         
 
 
@@ -170,7 +170,7 @@ function($scope, $rootScope, $timeout,
             $scope.loadLSDict = function(dict){
                         "use strict"
 
-                        console.log("dict to load", dict)
+                        //console.log("dict to load", dict)
 
                         userFile.currentFilename = dict.toString()
 
@@ -499,6 +499,7 @@ function($scope, $rootScope, $timeout,
                                 $timeout(function(){
                                         $scope.voice2 = getVoiceIndex(v)
                                         console.log("new voice2\n\n",v, $scope.voice2)
+                                        //alert($scope.voice2 + " " + $scope.voices[$scope.voice2].name)
                                 })
             }
             function getVoiceIndex(name){
@@ -511,6 +512,8 @@ function($scope, $rootScope, $timeout,
                         
             }
 
+            //let arrAA = [1,2,3]
+            //let arrBB = [...arrAA]
 
 
             $scope.direction = 'ab',
@@ -526,13 +529,14 @@ function($scope, $rootScope, $timeout,
             $scope.testLength = $scope.lengths[1]
 
             $scope.testTypes = ['repeat previous','newest','checked ones','all words','unknown']
-            $scope.defaultType = $scope.testTypes[1]
-            $scope.testType = $scope.defaultType
-            //console.log('$scope.defaultType', $scope.defaultType)
+            $scope.selectedType = $scope.testTypes[1]
+
+            //$scope.testType = $scope.selectedType
+            //console.log('$scope.selectedType', $scope.selectedType)
 
             $scope.updateWord = testShare.updateWord
             $scope.prepareExam = exam.prepareExam
-            $scope.previousQs = []
+            $scope.previousTest = []
             
 
             $scope.getWords = testShare.getWords
@@ -651,9 +655,12 @@ function($scope, $rootScope, $timeout,
                         $scope.$parent.$broadcast('dirChange',$scope.direction)
                 }
                 $scope.typeSelection = function(type){
-                        $scope.testType = type
-                        //console.log($scope.testType)
-                        //return type
+                        $timeout(function(){
+                                $scope.prevType = $scope.selectedType
+                                //$scope.testType
+                                $scope.selectedType = type
+
+                        })
                 }
                 
                 $scope.shared = testShare.testQuestions
@@ -670,17 +677,16 @@ function($scope, $rootScope, $timeout,
                         
 
                         new Promise(function(resolve,rej){
-                                let rslt = $scope.prepareExam($scope.testType, $scope.testLength, $scope.words)
-                                                resolve(rslt)
+                                let rslt = $scope.prepareExam($scope.selectedType, $scope.testLength, $scope.words)
+
+                                resolve(rslt)
                         })
                         .then(function(test){
                                 console.log('- - - - - - - - - - - - - -')
                                 console.log('new test questions arrived')
-                                //console.log($scope.shared)
+                                console.log(test)
                                 
-                                $scope.shared = test
-                                $scope.setTest(test)
-                                $scope.mainScreen = false
+                                
 
                                 let voiceToSend = {
                                                 // defaultVoice1Index
@@ -690,16 +696,21 @@ function($scope, $rootScope, $timeout,
                                                 v2: ($scope.voice2) ? $scope.voice2 : $scope.defaultVoice2Index
                                 }
                                 console.log('voiceToSend', voiceToSend)
+                                //alert(JSON.stringify(voiceToSend))
 
-                                $rootScope//.$parent
-                                .$broadcast('newTest', voiceToSend)
+                                
 
 
                                 //console.log('$scope.screen', $scope.screen)
-                                $scope.$apply()
+                                //$scope.$apply()
                                 $timeout(function(){
                                         $scope.screen = "test"
+                                        $scope.shared = test
+                                        $scope.setTest(test)
+                                        $scope.mainScreen = false
                                 })
+                                $rootScope//.$parent
+                                .$broadcast('newTest', voiceToSend)
                                         
                                         //testShare.testQuestions
                                         //testShare.testQuestions = test
@@ -774,7 +785,9 @@ function($scope, $rootScope, $timeout,
                                 
                                 // is froup one checked?
                                 // if yes, then uncheck all even itself
+
                                 if ($scope.slct.indexOf(id)>-1){
+
                                         console.log('group', id,"-",id+10,"is checked ==> UNCHECK em" )
                                         //  ==> uncheck em all
 
@@ -790,6 +803,7 @@ function($scope, $rootScope, $timeout,
                                                 $timeout(function(){
 
                                                         $scope.slct.splice($scope.slct.indexOf(i),1 )
+                                                        $scope.selectedType = $scope.prevType
                                                 })
                                                 }
                                         }
@@ -801,6 +815,7 @@ function($scope, $rootScope, $timeout,
 
                                                         $timeout(function(){
                                                                 $scope.slct.push(i)
+                                                                $scope.selectedType = 'checked ones'
                                                         })
 
                                                 }
@@ -897,7 +912,7 @@ function($scope, $rootScope, $timeout,
                 $scope.synth = window.speechSynthesis;
                 $scope.voices = []
 
-                setTimeout(function(){
+                $timeout(function(){
                         $scope.voices = $scope.synth.getVoices();    
                 },1000)
         }
@@ -954,7 +969,8 @@ function($scope, $rootScope, $timeout,
         })
         $scope.$on('endOfTest', function(){
                 console.log('endoftest')
-                $scope.screen = ''     
+                $scope.screen = ''    
+                $scope.blur = false; 
                                    
         })
 
@@ -962,48 +978,72 @@ function($scope, $rootScope, $timeout,
         $scope.$on('newTest',function(ev, voiceData){
                 console.log($scope)
                 console.log("\n\n\nlistener count", $scope.$$listenerCount['newTest']) 
-                if ($scope.$$listenerCount['newTest']>1) 
-                    $scope.$$listenerCount['newTest'] = 1
+                //if ($scope.$$listenerCount['newTest']>1) 
+                //    $scope.$$listenerCount['newTest'] = 1
                 
 
                 console.log('--------------------------------------')
 
 
                 if (window.speechSynthesis){
-                        $scope.voice1On = voiceData.v1on
-                        $scope.voice2On = voiceData.v2on
-                        $scope.voice1 = $scope.voices [voiceData.v1]
-                        $scope.voice2 = $scope.voices [voiceData.v2]
+                        $timeout(function(){
+                                $scope.voice1On = voiceData.v1on
+                                $scope.voice2On = voiceData.v2on
+                                $scope.voice1 = $scope.voices[voiceData.v1]
+                                $scope.voice2 = $scope.voices[voiceData.v2]
+
+                                //alert('ahoj');
+                                //alert("speeches: \n" + $scope.voice1On +" "+ $scope.voice2On + "\n" + 
+                                //$scope.voice1.name + "\n" + $scope.voice2.name)
+                        })
+                        
                 }
+                
 
                 console.log("speeches: \n", $scope.voice1On, $scope.voice2On, 
                                 $scope.voice1, $scope.voice2)
 
-                $scope.localWords = $scope.getWords()
+                
+
                 $timeout(function(){
                         //console.log('localWords', $scope.localWords)
-                },000)
+                        $scope.localWords = $scope.getWords()
+
+
+                        $scope.oks = 0, $scope.bads = 0, $scope.feedback = []
+                        $scope.round = 0
+        
+                        //$scope.blur = true
+                        $scope.changeNextGo('go')
+                        $scope.finalResult = 0
+
+                        $scope.screen = 'test'
+                        $scope.showTest = true
+
+                        $scope.testQuestions = $scope.getQuestions()
+                        //console.log('$scope.testQuestions', $scope.testQuestions) //[$scope.round]
+                        console.log('$scope.testQuestions', $scope.testQuestions[$scope.round])
+
+                        $scope.currIndex = $scope.testQuestions[$scope.round].ind
+
+                        console.log($scope.round+1, " vs ", $scope.testQuestions.length)
+                        
+                        $scope.newRound('first')
+                })
                 
                 console.log('|||||    zen? ',$scope.zen)
-                $scope.oks = 0, $scope.bads = 0, $scope.feedback = []
-                $scope.round = 0
-
-                $scope.blur = true
-                $scope.changeNextGo('go')
+                
                 //alert(JSON.stringify(data))
-                $scope.testQuestions = $scope.getQuestions()
+                
                 //console.log('|||||||||| scope 2:')
                 //console.log('dir',$scope.direction)
-                $scope.screen = 'test'
-                $scope.showTest = true
+                
                 //$scope.$apply()
                 //  
-                $scope.currIndex = $scope.testQuestions[$scope.round].ind
+                
                 //console.log('$scope.currIndex',$scope.currIndex)
                 //$scope.curr = $scope.testQuestions
-                console.log($scope.round+1, " vs ", $scope.testQuestions.length)
-
-                $scope.newRound('first')
+                
 
                 //console.log("---round now1>>>", $scope.round)
                 /*setTimeout(function(){

@@ -6,10 +6,6 @@
 
 
 
-- i can do checked-ones test
-- i can have test from unknown words
-
-
 - add “repeat previous test” functionaility
 
 
@@ -34,3 +30,8 @@
 - disable round numbers in select when my vocab isn’t that long
 - highlight selected words in vocab
 - add “delete vocab” from local storage functionality
+
+6.nov.17
+- i can do checked-ones test
+- i can have test from unknown words
+- wierd not focusing repaired by timeout

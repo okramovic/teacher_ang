@@ -95,8 +95,11 @@ app.service('exam', ['$timeout',function($timeout){
                         let toSay = curWord.word[to]
                         let utterThis = new SpeechSynthesisUtterance(toSay);
                         utterThis.voice = this.voice2//zis.voices[64];
+                        utterThis.lang = this.voice2.lang
+                        //alert(JSON.stringify(this.voice2) + "\n" +
+                        //utterThis.voice.localService + " "+ utterThis.voice.lang + "\n\n " + utterThis.voice.name + " " + utterThis.voice.voiceURI)
                         //utterThis.onstart = function(){}
-                        //utterThis.lang = "de-DE"
+                        
                         this.synth.speak(utterThis);
                 }
                 /*else if (idk && !this.zen){
@@ -673,6 +676,8 @@ function newRound(string){
                         let toSay = this.testWord//curWord.word[to]
                         let utterThis = new SpeechSynthesisUtterance(toSay);
                         utterThis.voice = this.voice1//zis.voices[64];
+                        utterThis.lang = this.voice1.lang
+                        
                         //utterThis.onstart = function(){}
                         //utterThis.lang = "de-DE"
                         this.synth.speak(utterThis);
@@ -682,6 +687,8 @@ function newRound(string){
 function prepareExam (type,len,words,cb){
     
                 console.log('its ',type,'length', len)
+
+
                 let taken = [],questions=[]
     
                 if (type=== 'all words'){
@@ -746,22 +753,32 @@ function prepareExam (type,len,words,cb){
                         }
 
                         return questions
+
                 } else if (type === 'checked ones'){
+
                         let chosenW = []
 
-                        console.log('this.slct', this.slct)
+                        //console.log('this.slct', this.slct)
 
-                        if (len>this.slct.length) len=this.slct.length
+                        //if (len>this.slct.length) 
+                        len = this.slct.length
 
                         for (let i=0; i<len ; i++){
+                                //console.log(this.words[this.slct[i]] )
 
-                                chosenW.push( { ind: this.slct[i], 
-                                                word: this.words[this.slct[i]] })
+                                chosenW.push( //{ ind: this.slct[i], 
+                                              //  word: 
+                                              
+                                                this.words[this.slct[i]] 
+                                              //}
+                                )
                         }
 
                         console.log('chosenW', chosenW)
                         
-                        words = chosenW
+                        //words = [...chosenW]
+                        // now they are ordered as in vocab - > shuffle them
+
 
                         for (let i=0; i<len; i++){
 
@@ -769,21 +786,62 @@ function prepareExam (type,len,words,cb){
 
                                 while(!found) {
     
-                                        let ind = Math.floor(Math.random()*words.length)
+                                        let ind = Math.floor(Math.random()*chosenW.length)
                                         //console.log(ind, taken.indexOf(ind));
                 
                                         if (taken.indexOf(ind)=== -1) {
                                                         taken.push(ind)
                                                         questions.push({
                                                                         ind: ind,
-                                                                        word: words[ind]
+                                                                        word: chosenW[ind]
                                                                         })
                                                         found = true
 
-                                        } else { found = false
+                                        } else { //found = false
                                         }
                                 }
                         }
+                        console.log("questions\n", questions)
+
+                        return questions
+                } else if (type === 'unknown'){
+
+                        let filtered = words.filter(function(item){
+
+                                                console.log(item)
+
+                                        return item[2] === undefined
+                        })
+
+                        if (len>filtered.length) len=filtered.length
+                        
+                        for (let i=0;i<len; i++){
+                                            
+                                    let found = false
+                        
+                                    while(!found) {
+                        
+                                            let ind = Math.floor(Math.random()*words.length)
+                                                        //console.log(ind, taken.indexOf(ind));
+                                
+                                            if (taken.indexOf(ind)=== -1) {
+
+                                                        taken.push(ind)
+                                                        questions.push({
+                                                                ind: ind,
+                                                                word: words[ind]
+                                                                })
+                                                        found = true
+
+                                            } else { //found = false
+                                            }
+                                    } 
+                                            
+                                            
+                        } 
+                        console.log('questions', questions)
+                        return questions
+
                 }
     
                 // 'repeat previous','checked ones','everything','unknown','newest']

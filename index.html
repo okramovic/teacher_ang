@@ -186,10 +186,12 @@
                                         </div>
                             </div>
                             <div class="col s6">
+                                    <!-- test length selection -->
                                     <select class="browser-default"
                                             ng-model="defaultLength" 
                                             ng-options="l + ' rounds' disable when words.length < l
                                                         for l in lengths"
+                                            ng-disabled="slct.length>0 && selectedType === 'checked ones'"
                                             ng-change="lengthSelect(defaultLength)"
                                             >
                                             
@@ -209,11 +211,13 @@
                             </div>
                             
                             <div class="col s6">
-                                    <select ng-model="defaultType" ng-options="t for t in testTypes
-                                            " 
-                                            class="browser-default"
+                                    <select ng-model="selectedType" 
+                                    ng-options="t disable when (t ==='repeat previous' && previousTest.length<1) ||
+                                                (t==='checked ones' && slct.length<1) for t in testTypes"
+
+                                        class="browser-default"
                                             
-                                            ng-change="typeSelection(defaultType)">
+                                        ng-change="typeSelection(selectedType)">
                                     </select>                
                             </div>
                             
@@ -223,6 +227,7 @@
                             <button ng-click="practice()">practice</button>
                         </div>
                         
+                        <!-- voices settings -->
                         <div ng-show="screen == 'main'" style="margin-top: 30px;">
                             <label>voice for {{lang1}}
                                 <input type="checkbox" ng-checked="voice1On"
@@ -256,7 +261,7 @@
                     
                 </div>
 
-                <div ng-if="screen == 'words'">
+                <div ng-show="screen == 'words'">
                         
                         <!-- ng-show="!showWords" -->
                         <div class="butRow" style="border: 1px solid gray">
