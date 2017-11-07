@@ -75,6 +75,13 @@ i{
     user-select: none;
     -webkit-user-select: none;
 }
+.btn{
+    background-color: rgba(63, 120, 254,.6);
+    border-radius: 4px;
+}
+input[type="file"]{
+    font-size: 13px;
+}
 .gray{
     color: rgba(193, 193, 193, 0.5);
 }
@@ -156,11 +163,11 @@ h3, h4, h5, h6{
     -webkit-user-select: none;
     
 }
-textarea:placeholder{
-    text-align: center;
-}
+
 textarea::placeholder{
     text-align: center;
+    /*color: red;*/
+    font-size: 17px;
 }
 
 .center{
@@ -195,4 +202,12 @@ textarea::placeholder{
 }
 .six{
     color: #0040ff;
+}
+
+
+
+.example{
+    padding: 0px;
+    margin: 0px;
+    font-size: 18px;
 }

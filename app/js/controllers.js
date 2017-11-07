@@ -512,6 +512,7 @@ function($scope, $rootScope, $timeout,
 
             $scope.testTypes = ['repeat previous','newest','checked ones','all words','unknown']
             $scope.selectedType = $scope.testTypes[1]
+            $scope.prevType = $scope.testTypes[1]
 
             //$scope.testType = $scope.selectedType
             //console.log('$scope.selectedType', $scope.selectedType)

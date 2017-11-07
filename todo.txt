@@ -6,8 +6,9 @@
 
 
 
+- validate inputed files or pasted text, if its w mistakes, dont proceed and stay on mainscreen
 
-- tap target thing in mtrlz (in word load menu), it explains whats the app about and for
+
 
 - when finished test, test screen fades away and after that my score fades-in
 
@@ -49,3 +50,8 @@ not that important? try
 - add dates to Local Storage vocabs
 - if theres no speech synthesis in browser, display no selects for voices
 - i can download txt file with my current vocab
+
+8.nov.17
+- tap target thing in mtrlz (in word load menu), it explains whats the app about and for
+- nicer div with dictionary selection/pasting
+- add mtrlz modal for instructions how should pasted text look like

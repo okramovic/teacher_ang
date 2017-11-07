@@ -8,18 +8,40 @@
         <!-- Compiled and minified CSS -->
         <!--link rel="stylesheet"       
         href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"-->
-        <link rel="stylesheet"  href="./app/libs/materialize.min.css">
+        <!--link rel="stylesheet"  href="./app/libs/materialize.0.100.2.min.css"-->
+        <link rel="stylesheet"  href="./app/libs/materialize.0.98.1.min.css">
 
         <link rel="stylesheet"  href="./app/css/general.css" >
         <link rel="stylesheet"  href="./app/css/testDiv.css" >
         <link rel="stylesheet"  href="./app/css/mainScreen.css" >
         <link rel="stylesheet"  href="./app/css/animations.css" >
         
-                <!--script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script-->
-                <!--script src="https://opensource.keycdn.com/angularjs/1.6.6/angular.min.js"></script-->
-                <script src="./app/libs/angular.min.1.6.6.js"></script>
-                <script src="./app/libs/angular-animate.min.js" ></script>
+                
+        <!--script src="https://opensource.keycdn.com/angularjs/1.6.6/angular.min.js"></script-->
+                
+        <!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script-->
+        <!--script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script-->        
+                
+        
+        <!--script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script-->
+        <script type="text/javascript" src="./app/libs/jquery-3.1.1.min.js"></script>
 
+                <script src="./app/libs/angular.1.5.5.min.js"></script>
+                <!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script-->
+
+                <!--script type="text/javascript" 
+                    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script-->
+                <script src="./app/libs/materialize.0.98.1.min.js"></script>
+
+
+                <!--script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-materialize/0.2.2/angular-materialize.min.js"></script-->
+                <script src="./app/libs/angular-materialize.0.2.2.min.js"></script>
+
+                <!--script src="./app/libs/angular.1.6.6.min.js"></script-->
+                <script src="./app/libs/angular-animate.1.5.5.min.js" ></script>
+                <!--script src="https://code.angularjs.org/1.5.5/angular-animate.min.js" ></script-->
+                
+                <!--script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-materialize/0.2.2/angular-materialize.min.js"></script-->
 
         
                 <script src="./app/js/teacherApp.js"></script>
@@ -62,7 +84,7 @@
 
                 <!-- "navbar" -->
                 <div class="in_row">
-                    <div style="border- 1px dashed; display:flex; align-items: center">
+                    <div style="display:flex; align-items: center">
                         <div ng-show="screen =='main'" 
                             ng-click="screenChange('initial')"
                             class="alignCenter">
@@ -87,9 +109,11 @@
                                     main: 'titleEnabled'}[screen]">the Teacher</h4>
                     <!--  && screen != 'initial' -->
                     <div>
+                        <div ng-show="screen == undefined || screen == 'initial'">
+                                <a class='btn btn-sm' data-target='introModal' modal>?</a>
+                        </div>
                         <div ng-hide="screen == undefined || screen == 'initial'"    
-                            style="display: flex; align-items: center;
-                                   border- 1px dashed ">
+                            style="display: flex; align-items: center;">
                             <!--label for="checkbox"></label-->
                             <i ng-show="!zen" class="material-icons"
                                ng-class="{test: 'titleDisabled'}[screen]" >location_city</i>
@@ -110,6 +134,20 @@
                 <!--  loading words  -->
                 <div ng-show="screen ==undefined || screen == 'initial'" >
 
+                            <div id="introModal" class="modal">
+                                    <div class="modal-content">
+                                        <div class="center vertical">
+                                            <h4>Welcome</h4>
+                                            <p>welcome message for new users</p>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">ok</a>
+                                    </div>
+                            </div>
+                    <div style="width: 100%; display: flex; justify-content: center;">
+                        <!--a class='btn blue' data-target='introModal' modal>?</a-->
+                    </div>
                     <div ng-show="hasLocalStorage() == true">
                         <div class="center vertical">
                                 <h5>previous dictionaries</h5>
@@ -125,23 +163,19 @@
                                             ng-click="deleteLSDict(dict.name, $index)">
                                             <i class="material-icons">delete</i>
                                         </button>
-                                    </div>
-                                    
-                                
+                                    </div> 
                             </div>
                             <br>
                             <h5>or</h5>
                         </div>
-                        
-                        
                     </div>
                     
                     
                     <div class="center vertical">
                             <button ng-click="chooseNew = !chooseNew" >load new words</button>
-                            <br><br>
+                            <br>
                             <div ng-show="chooseNew">
-                                    <div class="butRow">
+                                    <div class="center vertical">
                                         <button ng-click="loadDictWay = 'file'"  >open file</button>
                                             
                                         <button ng-click="loadDictWay ='copyPaste'">copy/paste</button>
@@ -153,16 +187,56 @@
                                     <div ng-if="loadDictWay == 'copyPaste'" class="center vertical">
                                             <textarea type="text" 
                                                     ng-model="txt"  cols="80" rows="10"
-                                                    placeholder="paste in text content of another file"></textarea>
-                                            <div class="butRow">
+                                                    style="height: 150px; width: 80%; margin: 20px 10px; font-size: 18px;"
+                                                    placeholder="paste in content of another file (check the hint)
+                                                    "></textarea>
+
+                                            <div class="" 
+                                                style="width: 80%; margin: auto;
+                                                display: flex; justify-content: space-around; align-items: center;">
+                                                <a class='btn btn-sm' style="padding-left: 10px; padding-right: 10px"
+
+                                                  data-target='instructionsModal' modal>how?</a>
                                                 <button ng-click="uploadPasted(txt)">Go</button>
                                             </div>
                                             <br><br>
                                     </div>
-                                    <div class="center">
-                                            <input type="file" ng-show="loadDictWay == 'file'"
-                                            ng-model="file.data" file-select="data">
+                                    <div id="instructionsModal" class="modal" style="width: 90%">
+                                            <div class="modal-content">
+                                                <div class="" style="display: flex; flex-direction: column; align-items: center;
+                                                    justify-content: flex-start">
+                                                    <h4>example:</h4>
+                                                    <p class="example">eng.de</p>
+                                                    <p class="example">good morning. guten morgen</p>
+                                                    <p class="example">spring. der Frühling</p>
+                                                    <p class="example">strong. stark, kräftig</p>
+                                                    <p class="example">calm, quiet. ruhig</p>
+                                                    <!--br-->
+                                                    <span class="example" 
+                                                          style="color: rgb(181, 181, 181); padding-top: 10px;">
+                                                          (first line stands for languages)</span>
+                                                    <span class="example" 
+                                                          style="color: rgb(181, 181, 181); margin-bottom: 0px">
+                                                          (each word pair must be on separate line)</span>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer" style="padding-bottom: 20px;">
+                                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">ok</a>
+                                            </div>
                                     </div>
+
+                                    <div class="center" 
+                                         style="width: 100%; border:0px dashed; display: flex; justify-content: center;">
+                                            <input type="file" ng-show="loadDictWay == 'file'"
+                                            ng-model="file.data" file-select="data"
+                                            style="width: 80px; margin: auto; margin-top: 20px; margin-bottom: 20px;
+                                                   display: flex; 
+                                                   flex-wrap: wrap;
+                                                   flex-direction: column; 
+                                                   justify-content: center;
+                                                   align-items: center;">
+                                    </div>
+                                    <br/>
                                     
                             </div>
                     </div>
