@@ -1,7 +1,44 @@
-app.service('exam', ['$timeout',function($timeout){
+app.service('exam', ['$timeout','$window',function($timeout,$window){
     
         this.prepareExam = prepareExam
+        this.downloadDict = function downloadDict(notes){
+                
+                        //let x = this.userNotes
 
+                        if (!notes) notes = ""
+
+                        if ( !this.currentFilename.endsWith('.txt')) this.currentFilename += '.txt'
+
+                        
+                        let url = $window.URL || $window.webkitURL
+
+                        let data = [[this.lang1, this.lang2],
+                                     ...this.words]
+                                     .map(function(word){
+                                        return word.join(". ")
+                                     })
+
+                        data =  "Your notes:\n\n" + notes + "\n\n" + 
+                                "- - - (do not remove this line) - - -\n"  + 
+                                data.join("\n")
+
+                        
+
+                        let blob = new Blob([data], {type: 'text/plain'})
+                        //console.log('blob', blob)
+                        this.myURL = url.createObjectURL(blob);
+
+                        
+                        let zis = this
+                        $timeout(function(){
+                                console.log('--- this\n', zis)
+                                //zis.$parent.showUserNotes = false;
+                                zis.showUserNotes = false;
+                        })
+                        //this.showUserNotes = false;
+
+                        //console.log('--- this 222 \n',this)
+        }
 
         var x// = {a:"a", b:"b"}
         this.shared = x
@@ -38,9 +75,6 @@ app.service('exam', ['$timeout',function($timeout){
         this.getNextGo = getNextGo
 
 
-        //this.
-        //changeNextGo('abrakadabra')
-
         this.submit = function submit(ind,input, round, idk){
                 console.log('     - - - -  new answ - - - - ')
                 //console.log('>>>', ind, input,"round", round)
@@ -49,8 +83,7 @@ app.service('exam', ['$timeout',function($timeout){
                         //console.log('this.nextgo',this.nextGo)
                 //},1000)
                 
-                //this.nextGo = ""
-                //console.log('gogogog', this.getNextGo())
+                
                 
                 this.okAnswer = okAnswer; this.badAnswer = badAnswer
 
@@ -159,7 +192,7 @@ app.service('exam', ['$timeout',function($timeout){
                                                 console.log('end speech')    
 
                                                 zis.timeout(function(){
-
+                                                        zis.addRound = true;
                                                         resolve(res.res)
                                                 },500)
                                                 
@@ -170,17 +203,20 @@ app.service('exam', ['$timeout',function($timeout){
 
                                 console.log('1 + no-zen')
 
-                                $timeout(function(){
-                                        //zis.nextGo = "go"
-                                        //zis.answerHide = true
-                                        zis.nextGo = "next"
-                                        zis.answerHide = false
-                                })
+                                
 
                                 zis.animateOk(function(){
 
                                         //utterThis.onend = function(){
                                                 console.log('end speech')    
+
+                                                $timeout(function(){
+                                                        //zis.nextGo = "go"
+                                                        //zis.answerHide = true
+                                                        zis.nextGo = "next"
+                                                        zis.answerHide = false
+                                                        zis.addRound = true;
+                                                })
 
                                                 zis.timeout(function(){
 
@@ -194,11 +230,12 @@ app.service('exam', ['$timeout',function($timeout){
                         } else if (res.res === 1 && zis.zen){
                                     console.log('1 + zen')
 
-                                    zis.animateBad(function(){
+                                    zis.animateOk(function(){
 
                                         $timeout(function(){
                                                 zis.nextGo = "next"
                                                 zis.answerHide = false
+                                                zis.addRound = false
                                                  
                                         })
                                         resolve(res.res)
@@ -206,7 +243,7 @@ app.service('exam', ['$timeout',function($timeout){
                                     })                                    
                                     
 
-                        } else if (res.res === 0) {     
+                        } else if (res.res === 0 && !zis.zen) {     
                                     console.log('\n\n  idk or 0')
                                     //console.log('this', this)
                                     //resolve(res.res)
@@ -216,6 +253,7 @@ app.service('exam', ['$timeout',function($timeout){
                                     $timeout(function(){
                                        zis.changeNextGo('next')// = "next"
                                        zis.answerHide = false
+                                       zis.addRound = true
                                     })
                                     
                                     resolve(res.res)  
@@ -225,7 +263,25 @@ app.service('exam', ['$timeout',function($timeout){
                                     },1000)
 
                                     //zis.$apply()
-                        }
+                        } else if (res.res === 0 && zis.zen) {     
+                                console.log('\n\n  idk or 0')
+                                //console.log('this', this)
+                                //resolve(res.res)
+                                
+                                zis.animateBad()
+
+                                $timeout(function(){
+                                   zis.changeNextGo('next')// = "next"
+                                   zis.answerHide = false
+                                   zis.addRound = false
+                                })
+                                
+                                resolve(res.res)  
+                                
+                                $timeout(function(){
+                                    //alert(zis.getNextGo())
+                                },1000)
+                        } else alert('error Promise')
                         
 
                         //console.log(utterThis)
@@ -240,10 +296,8 @@ app.service('exam', ['$timeout',function($timeout){
                 
                 this.p2.then(function(answer){
 
-                        console.log('correct?', answer)//, curWord)
+                        console.log('correct?', answer)
 
-                    //
-                        //console.log(this)
                         // possibilities:
                         //  1) ok answer & no zen  >>> ok point, next round, rating up
                         //  2) ok answer & zen     >>> ok point, next round, rating up
@@ -297,37 +351,31 @@ app.service('exam', ['$timeout',function($timeout){
 
                                 if (end === true){
                                         
-                                        //setTimeout
                                         $timeout(function(){
                                                 zis.finalResult = 1         
                                                 zis.showTest = false
-                                                console.log('zis.finalResult', zis.finalResult)
+                                                //console.log('zis.finalResult', zis.finalResult)
 
-                                                if (!zis.feedback || zis.feedback.length===0){
+                                                if (!zis.feedback || zis.feedback.length === 0){
+
                                                         console.log('zis.feedback',zis.feedback)
-                                                zis.$parent.$broadcast('endOfTest')
-                                                //zis.screen = null
+                                                        zis.$parent.$broadcast('endOfTest')
                                                 }
                                         }, 3000)
         
                                 } else if (end === false){
         
                                         //console.log('res?', res)
-                                        console.log(' o o o o o zis.nextGo',zis.getNextGo())
+                                        //console.log(' o o o o o zis.nextGo',zis.getNextGo())
 
                                         if (zis.nextGo === 'go'){
-                                                //alert('free to go')
-                                                zis.newRound();
+                                                 zis.newRound();
                                         
                                         } else if(zis.nextGo ==='next') {
                                                 //alert("-next-")
                                         }
-                                        //setTimeout(function(){
-                                        if (res === 2) {}//zis.newRound();
-                                        else {
-                                                //alert('something goin on')
-                                        }
-                                        //}, 3000)
+                                        
+                                        
                                         
                                 }
 
@@ -407,7 +455,7 @@ function okAnswer(zen,curWord,cb){
         this.timeout(function updateProgress(){
 
                 zis.oks ++
-                zis.round ++
+                //zis.round ++
                 zis.changeLevel(curWord,1)
                 if (cb) cb()
         },0)
@@ -416,7 +464,7 @@ function okAnswer(zen,curWord,cb){
         else this.timeout(function updateProgress(){
 
                 zis.oks ++
-                zis.round ++;
+                //zis.round ++;
                 if(cb) cb()
         }, 0)
 
@@ -458,7 +506,7 @@ function badAnswer(zen, curWord,input, cb){
                 zis.answerHide = false
 
                 zis.bads ++
-                zis.round ++
+                //zis.round ++
                 zis.changeLevel(curWord,-1)
 
                         let toFeedback = {original:curWord}
@@ -643,6 +691,7 @@ function changeLevel(word, change){
 }
 function newRound(string){
         //console.log('from:',  this.from)
+        console.log('this',this);
         if (string ==='first' ) {this.round=0; string = null;
                 
         }
@@ -651,6 +700,8 @@ function newRound(string){
                 //this.blr ++
                 //alert('blr')
         }
+
+        if (this.addRound) this.round ++
 
         this.blur = true//!this.blur
         this.focusIt = function bb(){
@@ -661,6 +712,9 @@ function newRound(string){
         console.log('rounds', this.round)//, this.testQuestions[0].word)
         console.log('current word:  ', this.testQuestions[this.round].word[0],this.testQuestions[this.round].word[1])
         //console.log("inpVal",this.inpVal," || ", this.user.input,"<<<")
+        /*$timeout(function(){                        
+        })*/
+
         this.testWord = this.testQuestions[this.round].word[this.from] 
         this.corrAnswer = this.testQuestions[this.round].word[this.to] 
         this.answerHide = true
@@ -669,19 +723,18 @@ function newRound(string){
 
         if (this.round===0) this.$apply()
 
-        console.log('this.voice1On',this.voice1On, this.testWord)
+        console.log('this.voice1On', this.testWord)
 
         if (this.voice1On){
 
-                        let toSay = this.testWord//curWord.word[to]
+                        let toSay = this.testWord
                         let utterThis = new SpeechSynthesisUtterance(toSay);
-                        utterThis.voice = this.voice1//zis.voices[64];
+                        utterThis.voice = this.voice1
                         utterThis.lang = this.voice1.lang
                         
                         //utterThis.onstart = function(){}
-                        //utterThis.lang = "de-DE"
                         this.synth.speak(utterThis);
-                }
+        }
         
 }
 function prepareExam (type,len,words,cb){
@@ -909,7 +962,19 @@ function upload(text){
         //})
 
 }
+function downloadDict(notes){
 
+        let x = this.userNotes
+        //alert
+        console.log('downloading >>' + notes + "<<")
+
+        let data = 'testik', 
+        blob = new Blob([data], {type: 'text/plain'})
+        url = $window.URL || $window.webkitURL
+        //console.log(this)
+        console.log('blob', blob)
+        this.myURL = url.createObjectURL(blob);
+}
 
 
 function parseText(string){
@@ -985,3 +1050,4 @@ function mergeToSave(langs, words){
 
         return res
 }
+

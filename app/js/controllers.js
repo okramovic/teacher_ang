@@ -66,27 +66,15 @@ function($scope, $rootScope, $timeout,
         exam,vocabfile, testShare){
 
                 // add dropbox get file and upload file functionality to show off
-                // use localstorage!! to store file
-                //console.log($window.localStorage)
-
-
-                //let t = angular.toJson({name: 'marko', age: 32})
-                //console.log('to', typeof t)
+                
     
-                //$window.localStorage.setItem("userFileNames", 
-                        //angular.toJson([{name: "_words_en_-_est"}, {name: "__ test.txt"}] ))
-
-                //  ["_words_en_-_est", "__ test.txt"]
-                //$window.localStorage.removeItem("test")
                 //$window.localStorage.removeItem("_words_en_-_est")
                 //$window.localStorage.removeItem("userFileNames")
                 //$window.localStorage.removeItem("__ test.txt")  
                 //console.log($window.localStorage.getItem("_words_cz_-_de"))
 
 
-                //*/
-
-                setTimeout(function(){
+                //
                         //let xx= 
                         //console.log(  $window.localStorage.getItem("test")            )
                         //console.log(  $window.localStorage.getItem("userFileNames")   )
@@ -94,45 +82,36 @@ function($scope, $rootScope, $timeout,
                         //console.log(  angular.fromJson($window.localStorage.getItem("_words_en_-_est") ))
                         //console.log(     )
 
-                },1000)
+            
 
-                $scope.$timeout = $timeout
-
-                //$scope.test='halohalo222'
-                /*$scope.hideThis = false
-                $scope.testclick = function(){
-                        console.log("click")
-                        $scope.hideThis = !$scope.hideThis
-                }*/
-
-
+            $scope.$timeout = $timeout
         
+            
             if (window.speechSynthesis) {
 
-                var synth = window.speechSynthesis;
-                $scope.voices = []
+                        var synth = window.speechSynthesis;
+                
 
-                // promisify this
-                $timeout(function(){
-                        $scope.voices = synth.getVoices();    
-                        //console.log($scope.voices)
-                        
+                        // promisify this
+                        $timeout(function(){
+                                $scope.voices = []
+                                $scope.voices = synth.getVoices();    
+                                //console.log($scope.voices)
 
+                                $scope.defaultVoice1 = $scope.voices[0]
+                                $scope.defaultVoice1Index = 0
+                                $scope.defaultVoice2Index = 6
+                                $scope.defaultVoice2 = $scope.voices[$scope.defaultVoice2Index]
 
-                        $scope.defaultVoice1 = $scope.voices[0]
-                        $scope.defaultVoice1Index = 0
-                        $scope.defaultVoice2Index = 6
-                        $scope.defaultVoice2 = $scope.voices[$scope.defaultVoice2Index]
-
-                        var utterThis = new SpeechSynthesisUtterance('grüss gott grüss gott');
-                        utterThis.voice = $scope.voices[6];
-                        utterThis.lang = "de-DE"
-                        utterThis.onend = function(){
-                                console.log('end speech')
-                        }
-                        //console.log(utterThis)
-                        //synth.speak(utterThis);
-                }, 1500)
+                                var utterThis = new SpeechSynthesisUtterance('grüss gott grüss gott');
+                                utterThis.voice = $scope.voices[6];
+                                utterThis.lang = "de-DE"
+                                utterThis.onend = function(){
+                                        console.log('end speech')
+                                }
+                                //console.log(utterThis)
+                                //synth.speak(utterThis);
+                        }, 1200)
             }
             //console.log('digest check')
 
@@ -159,12 +138,12 @@ function($scope, $rootScope, $timeout,
                                         $window.localStorage.getItem("userFileNames")
 
                                 )
-                        if (names!== null && names!== undefined)
+                        /*if (names!== null && names!== undefined)
 
                         names = names.map(function(item){
 
                                                 return item.name
-                                        })
+                                        })*/
 
                         
                         $timeout(function(){
@@ -178,6 +157,7 @@ function($scope, $rootScope, $timeout,
 
                         
             }
+            
             loadLocalStorage()
             $scope.loadLSDict = function(dict){
                         "use strict"
@@ -185,6 +165,7 @@ function($scope, $rootScope, $timeout,
                         //console.log("dict to load", dict)
 
                         userFile.currentFilename = dict.toString()
+                        
 
                         let data = angular.fromJson( $window.localStorage.getItem(dict) )
                                         .map(function(item) {
@@ -205,10 +186,11 @@ function($scope, $rootScope, $timeout,
                                 $scope.words = data.slice(1)
                                 $scope.mainScreen = true
                                 $scope.screen = "main"
-                                
+                                $scope.currentFilename = userFile.currentFilename
+
                                 $scope.setWords(data.slice(1))
 
-                                console.log("userFile.", userFile)
+                                console.log("userFile.", $scope.currentFilename)
                         })
 
             } 
@@ -238,7 +220,7 @@ function($scope, $rootScope, $timeout,
 
                                 console.log("no stored filenames", savedFilenames)
 
-                                let names = [  {name: newName}  ]
+                                let names = [  {name: newName, date: dateIt()}  ]
                                 
                                 $window.localStorage.setItem("userFileNames", angular.toJson(names))
                                 console.log(  angular.toJson(names)  )
@@ -275,7 +257,8 @@ function($scope, $rootScope, $timeout,
 
 
                                         savedFilenames.push({
-                                                                name: newName.toString()
+                                                                name: newName.toString(),
+                                                                date: dateIt()
                                                             }
                                                            )
 
@@ -355,7 +338,7 @@ function($scope, $rootScope, $timeout,
                         $scope.lang2 = langs.b
                         
                                 userFile.currentFilename = "_words_" + langs.a.toString() + "_-_" + langs.b.toString()
-
+                                $scope.currentFilename = userFile.currentFilename
                         const WORDS = //mergeToSave([ $scope.lang1, $scope.lang2 ],                          
                              parseText(txt) //)
 
@@ -377,21 +360,20 @@ function($scope, $rootScope, $timeout,
                                         
                         },0)
                         //$scope.
-                        saveLocSto(userFile.currentFilename, $scope.lang1, $scope.lang2, WORDS
-                                //mergeToSave([ $scope.lang1, $scope.lang2 ],                               parseText(txt) )
-                        )
+                        saveLocSto(userFile.currentFilename, $scope.lang1, $scope.lang2, WORDS)
+                        loadLocalStorage()
             }
 
 
             // when using fileReader
-            let evCounter
+            let evCounter =0
             $scope.$on('newDict', function(e,d){
                     "use strict"
 
-                    if (evCounter !== undefined){
+                    if (evCounter > 0){
                                 //evCounter = 0 
                                 return
-                    } else {//evCounter++
+                    } else { evCounter++
 
                         console.log("new data")
                         console.log('evCounter', evCounter)
@@ -414,10 +396,12 @@ function($scope, $rootScope, $timeout,
                         //(function(){
 
                                 userFile.currentFilename = d.filename
+                                $scope.currentFilename = userFile.currentFilename
                                 //console.log('userFile', userFile)
                                 //$scope.idk = ".. 1 4 2 3 .."
                                 
                         //})
+                        console.log(d)
                         $scope.$apply(function(){
                                 $scope.storedDicts.push(d.filename)
                                 $scope.words = d.words
@@ -430,6 +414,7 @@ function($scope, $rootScope, $timeout,
 
                         //$scope.
                         saveLocSto(userFile.currentFilename, $scope.lang1, $scope.lang2, WORDS)
+                        loadLocalStorage()
                     }
             })
 
@@ -465,6 +450,7 @@ function($scope, $rootScope, $timeout,
 
             $scope.slct = [],  
             $scope.p1
+
 
             // voice business
 
@@ -510,9 +496,7 @@ function($scope, $rootScope, $timeout,
                         
             }
 
-            //let arrAA = [1,2,3]
-            //let arrBB = [...arrAA]
-            console.log("ahoooj")
+            
 
             $scope.direction = 'ab',
                 //$scope.lang1 = 'cz', 
@@ -589,18 +573,51 @@ function($scope, $rootScope, $timeout,
 
                 $scope.loadExample = function(){ 
                         $timeout(function(){
-                                $scope.words = $scope.example
+                                $scope.words = $scope.example2
                                 $scope.lang1 = 'en'
                                 $scope.lang2 = 'de'
                                 $scope.screen = "main"
 
-                                $scope.setWords(d.words)
+                                $scope.setWords($scope.words)
+                                console.log("set words  >\n",$scope.getWords());
+                                
+                                userFile.currentFilename = "_words_en_-_de"
+                                $scope.currentFilename = userFile.currentFilename
+
+                                saveLocSto(userFile.currentFilename,
+                                        $scope.lang1, $scope.lang2,$scope.words)
+                                loadLocalStorage()
+
                         })
                         
-
-                                userFile.currentFilename = "_words_en_-_de"
                 }
-
+                function dateIt(){
+                        
+                                let d = new Date()
+                        
+                                let month = d.getMonth()+1
+                                switch(month){
+                                        case 1: month = 'Jan'; break;
+                                        case 2: month = 'Feb'; break;
+                                        case 3: month = 'Mar'; break;
+                                        case 4: month = 'Apr'; break;
+                                        case 5: month = 'May'; break;
+                                        case 6: month = 'Jun'; break;
+                                        case 7: month = 'Jul'; break;
+                                        case 8: month = 'Aug'; break;
+                                        case 9: month = 'Sep'; break;
+                                        case 10: month = 'Oct'; break;
+                                        case 11: month = 'Nov'; break;
+                                        case 12: month = 'Dec'; break;
+                                }
+                                let min = d.getMinutes()
+                                if (min.toString().length === 1) min = '0' + min.toString()
+        
+                                let final = d.getDate() + " " + month + " " + d.getFullYear() + "  " + d.getHours() + ":" + min
+        
+                                console.log(final)
+                                return final
+                        }
                 $scope.zenSwitch = function(){
                         console.log('zenSwitched')
                         $timeout(function(){
@@ -621,8 +638,12 @@ function($scope, $rootScope, $timeout,
                         $timeout(function(){
                                 $scope.showWords = !$scope.showWords
                                 if (show) $scope.screen = "words"
-                                else if (!show) $scope.screen = "main"
+                                else if (!show) {
+                                        $scope.screen = "main"
+                                        $scope.showUserNotes = false;
+                                }
         
+                                
                                 //console.log("screen", show, $scope.screen)
                                 
                         })
@@ -899,7 +920,7 @@ function($scope, $rootScope, $timeout,
                     
                 }
                 
-                
+                $scope.downloadDict = exam.downloadDict
                 //$scope.shared = exam.shared
                 //$scope.shared = testShare.shrd
                 //console.log($scope.shared)
@@ -994,10 +1015,6 @@ function($scope, $rootScope, $timeout,
                                         $scope.voice2On = voiceData.v2on
                                         $scope.voice1 = $scope.voices[voiceData.v1]
                                         $scope.voice2 = $scope.voices[voiceData.v2]
-
-                                        //alert('ahoj');
-                                        //alert("speeches: \n" + $scope.voice1On +" "+ $scope.voice2On + "\n" + 
-                                        //$scope.voice1.name + "\n" + $scope.voice2.name)
                                 })
                                 
                         }
@@ -1015,6 +1032,7 @@ function($scope, $rootScope, $timeout,
 
                                 $scope.oks = 0, $scope.bads = 0, $scope.feedback = []
                                 $scope.round = 0
+                                $scope.addRound = false
                 
                                 //$scope.blur = true
                                 $scope.changeNextGo('go')
@@ -1074,7 +1092,7 @@ function($scope, $rootScope, $timeout,
 
                 console.log($scope.round, " vs ", $scope.testQuestions.length-1)
 
-                if ($scope.round > $scope.testQuestions.length-1){
+                if ($scope.round === $scope.testQuestions.length-1){
                                 
                                 //alert('end test - ')
                                 //$scope.$parent.$broadcast('endOfTest')

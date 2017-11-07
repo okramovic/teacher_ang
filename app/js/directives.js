@@ -317,7 +317,55 @@ app/*.directive('checkB',function(){
                 }
         }
 }])
+.directive('downloadFile',[function(){
+        return{
 
+                restrict: "E",
+                scope:{
+                        action: '&'
+                },
+                template: '<a href="#" download-file ' + 
+                                ' action="downloadDict(userNotes)"' +
+                                ' ng-clickzz="downloadDict(userNotes)" ' + 
+                                //'ng-href="{{ }}"'+
+                                ' >get the file</a>'
+                ,
+                replace: true,
+                link: function(scope, elem, attrs){
+                        console.log("scope", scope);
+                        console.log("attrs", attrs);
+                        console.log("elem", elem[0]);
+
+                        console.log("scope notes", scope.$parent.userNotes);
+                        //console.log(
+                        //elem[0].attrs("href") )
+                        // set href attr to new value
+                        let data = [[scope.$parent.lang1, scope.$parent.lang2],
+                                     ...scope.$parent.words].map(function(word){
+                                             return word.join(". ")
+                                     })
+                        //let data = 'testik', blob = new Blob([data], {type: 'text/plain'})
+
+                        //let func = /*elem[0].*/attrs.$get('action') //elem[0].
+                        //let func = /*elem[0].*/attrs['action'] //elem[0].
+                        let func = scope.$parent.downloadDict
+                        //func(scope.)
+                        //func.call('ulo')
+                        console.log(func)
+                        //scope.$parent.downloadDict('test test')
+                        //console.log(data);
+                        
+
+                        let href = 'data:application/octet-stream,' + 
+                                       encodeURIComponent('babuska')//comments + "\n" + 
+                        //                lang1 + "," + lang2 + "\n");
+                        //attrs.$set("href", href);
+                }
+
+
+        }
+
+}])
 function clearNotes(text){
 
         text = text.slice(

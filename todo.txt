@@ -5,9 +5,19 @@
 - decide what’s most important things to publish prototype
 
 
-- round counter doesnt show wierd numbers /gets updated when appropriate
-- i can download txt file with my current vocab
+
+
+- tap target thing in mtrlz (in word load menu), it explains whats the app about and for
+
 - when finished test, test screen fades away and after that my score fades-in
+
+
+- change initial menu to load words - make it a material. dropdown so it looks better and is organized
+
+- add mtrlz preloader when i tap on show vocab, bcs people might get confused that its not reacting
+
+
+
 
 
 not that important? try
@@ -33,3 +43,9 @@ not that important? try
 - if “from” voice speaks, it says first word only once
 - when copy/pasting - it stores lang line twice - repair to only once
 - add “repeat previous test” functionaility
+
+7.nov.17
+- round counter doesnt show wierd numbers /gets updated when appropriate
+- add dates to Local Storage vocabs
+- if theres no speech synthesis in browser, display no selects for voices
+- i can download txt file with my current vocab

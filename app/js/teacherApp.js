@@ -1,5 +1,9 @@
 var app = angular.module('teacherApp',['ngAnimate'])
 
+app.config(['$compileProvider', function ($compileProvider) {
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(|blob|):/);
+}]);
+
     /*.directive('checkB',function(){
         return {
                 restrict: 'AE',
