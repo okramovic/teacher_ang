@@ -72,8 +72,7 @@
                     ">
             
             
-            <div id="mainScreen" ng-controller="teacherCtr" 
-                    style="border: 1px solid;">
+            <div id="mainScreen" ng-controller="teacherCtr" style="border: 0px solid;">
 
                 <!--div ng-click="testclick()"> cklick here
                     <div class='animatediv' ng-hide='hideThis' >
@@ -83,8 +82,10 @@
                 
 
                 <!-- "navbar" -->
-                <div class="in_row">
-                    <div style="display:flex; align-items: center">
+                <div class="row in_row full_width" style="border: 0px dashed">
+
+                    <div class="col sm2" style="display:flex; align-items: center; 
+                                                border: 0px solid; width: 15%">
                         <div ng-show="screen =='main'" 
                             ng-click="screenChange('initial')"
                             class="alignCenter">
@@ -104,22 +105,29 @@
                         </div>
                     </div>
 
-                    <h4 ng-class="{test: 'titleDisabled', undefined: 'titleEnabled', 
+                    <!--  the teacher -->
+                    <h4 class="col sm8" style="width: 65%; border: 0px dashed" 
+                        ng-class="{test: 'titleDisabled', undefined: 'titleEnabled', 
                                     initial: 'titleEnabled', words: 'titleEnabled', 
                                     main: 'titleEnabled'}[screen]">the Teacher</h4>
-                    <!--  && screen != 'initial' -->
-                    <div>
+
+
+                    <!--  zen & modal -->
+                    <div class="col sm2" style="width: 15%; border: 0px dashed;
+                                            display: flex; justify-content: center; align-items: center">
                         <div ng-show="screen == undefined || screen == 'initial'">
-                                <a class='btn btn-sm' data-target='introModal' modal>?</a>
+                                <a class='btn btn-sm' data-target='introModal' modal>
+                                <i class="medium material-icons">local_post_office</i></a>
+                                <!-- flight_takeoff, pets, weekend -->
                         </div>
                         <div ng-hide="screen == undefined || screen == 'initial'"    
-                            style="display: flex; align-items: center;">
-                            <!--label for="checkbox"></label-->
-                            <i ng-show="!zen" class="material-icons"
-                               ng-class="{test: 'titleDisabled'}[screen]" >location_city</i>
-                            <!--i class="material-icons">brightness_2</i-->
-                            <i ng-show="zen" class="material-icons"
-                               ng-class="{test: 'titleDisabled'}[screen]">filter_hdr</i>
+                             style="display: flex; align-items: center;">
+                             <!--label for="checkbox"></label-->
+                             <i ng-show="!zen" class="material-icons"
+                                ng-class="{test: 'titleDisabled'}[screen]" >location_city</i>
+                             <!--i class="material-icons">brightness_2</i-->
+                             <i ng-show="zen" class="material-icons"
+                                ng-class="{test: 'titleDisabled'}[screen]">filter_hdr</i>
                             
                             
                             <label for="zen">
@@ -176,14 +184,20 @@
                             <br>
                             <div ng-show="chooseNew">
                                     <div class="center vertical">
-                                        <button ng-click="loadDictWay = 'file'"  >open file</button>
+                                        <button ng-click="loadDictWay = 'file'"  
+                                                style="margin: 10px 0px;"
+                                            >open file</button>
                                             
-                                        <button ng-click="loadDictWay ='copyPaste'">copy/paste</button>
+                                        <button ng-click="loadDictWay ='copyPaste'"
+                                                style="margin: 10px 0px;"
+                                                >copy/paste</button>
                                                             
-                                        <button ng-click="loadExample()">try example</button>
+                                        <button ng-click="loadExample()"
+                                                style="margin: 10px 0px;"
+                                                >try example</button>
                                     </div>
                                     
-            
+                                    <!-- input text area -->
                                     <div ng-if="loadDictWay == 'copyPaste'" class="center vertical">
                                             <textarea type="text" 
                                                     ng-model="txt"  cols="80" rows="10"
@@ -194,13 +208,36 @@
                                             <div class="" 
                                                 style="width: 80%; margin: auto;
                                                 display: flex; justify-content: space-around; align-items: center;">
-                                                <a class='btn btn-sm' style="padding-left: 10px; padding-right: 10px"
+                                                <a class='btn btn-sm' style="padding-left: 20px; padding-right: 20px"
 
-                                                  data-target='instructionsModal' modal>how?</a>
+                                                  data-target='instructionsModal' modal>?</a>
                                                 <button ng-click="uploadPasted(txt)">Go</button>
                                             </div>
                                             <br><br>
                                     </div>
+                                    <!-- input type file -->
+                                    <div class="center" 
+                                         style="width: 100%; border:0px dashed; 
+                                                display: flex; 
+                                                flex-direction: column;
+                                                justify-content: flex-start;
+                                                align-items: center">
+                                         <span class="example" 
+                                               style="color: rgb(181, 181, 181); padding-top: 10px;"
+                                               ng-show="loadDictWay == 'file'">
+                                               (only .txt files accepted)</span>
+                                            <input type="file" accept=".txt"
+                                                   ng-show="loadDictWay == 'file'"
+                                            ng-model="file.data" file-select="data"
+                                            style="width: 80px; margin: auto; margin-top: 20px; margin-bottom: 20px;
+                                                   display: flex; 
+                                                   flex-wrap: wrap;
+                                                   flex-direction: column; 
+                                                   justify-content: center;
+                                                   align-items: center;">
+                                    </div>
+                                    <br/>
+                                    <!-- instructions Modal -->
                                     <div id="instructionsModal" class="modal" style="width: 90%">
                                             <div class="modal-content">
                                                 <div class="" style="display: flex; flex-direction: column; align-items: center;
@@ -224,19 +261,6 @@
                                                 <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">ok</a>
                                             </div>
                                     </div>
-
-                                    <div class="center" 
-                                         style="width: 100%; border:0px dashed; display: flex; justify-content: center;">
-                                            <input type="file" ng-show="loadDictWay == 'file'"
-                                            ng-model="file.data" file-select="data"
-                                            style="width: 80px; margin: auto; margin-top: 20px; margin-bottom: 20px;
-                                                   display: flex; 
-                                                   flex-wrap: wrap;
-                                                   flex-direction: column; 
-                                                   justify-content: center;
-                                                   align-items: center;">
-                                    </div>
-                                    <br/>
                                     
                             </div>
                     </div>
@@ -250,7 +274,7 @@
                 <!-- words && mainScreen  -->
                 <div ng-show="screen == 'main'">
                     <div class="butRow row" style="border- 1px solid gray">
-                            <div class="col s6">
+                            <div class="col s6 center">
                                     <div>
                                             <button ng-show="screen=='main'" 
                                                     ng-click="showVocab(true)">show vocab</button>
@@ -276,22 +300,18 @@
                                 
                                 
                     </div>
-                    <div ng-show="screen == 'main'">
+                    <div ng-show="screen == 'main'" class="marginTop1">
                         <div class="butRow row">
                             
-                            <div class="col s6">
-                                    
+                            <div class="col s6 center">
                                         <button ng-show="screen == 'main'" ng-click="changeDir()">{{lang1}} to {{lang2}}</button>
-                                    
                             </div>
                             
-                            <div class="col s6">
+                            <div class="col s6 center">
                                     <select ng-model="selectedType" 
-                                    ng-options="t disable when (t ==='repeat previous' && getPrevTest()=== null) ||
-                                                (t==='checked ones' && slct.length<1) for t in testTypes"
-
+                                        ng-options="t disable when (t ==='repeat previous' && getPrevTest()=== null) ||
+                                                    (t==='checked ones' && slct.length<1) for t in testTypes"
                                         class="browser-default"
-                                            
                                         ng-change="typeSelection(selectedType)">
                                     </select>                
                             </div>
@@ -303,53 +323,57 @@
                         </div>
                         
                         <!-- voices settings -->
-                        <div ng-show="screen == 'main'" style="margin-top: 60px;">
+                        <div ng-show="screen == 'main'" class="center vertical" style="margin-top: 60px;">
                             <div ng-show="voices ===undefined || voices.length===0">
-                                <h6 class="center gray">your browser has no Speech ability</h6>
+                                <h6 class="center gray">your browser doesn't support Speech ability</h6>
                             </div>
-                            <div ng-show="voices && voices.length>0">
-                            <label>voice for {{lang1}}
-                                <input type="checkbox" ng-checked="voice1On"
-                                       ng-model="xxx" 
-                                       ng-change="voice1On = !voice1On">
-                            </label>
-                            <select class="browser-default" ng-model="defaultVoice1"
-                                    ng-options="voi.name +' '+ voi.lang for voi in voices"
-                                    ng-change="voice1Select(defaultVoice1.name)" >
-                                <!--option ng-repeat=" voi in voices"></option-->
-                            </select>
-                            <br>
-                            <label>voice for {{lang2}}
-                                <input type="checkbox" ng-checked="voice2On" 
-                                       ng-model="yyy" 
-                                       ng-click="voice2On = !voice2On">
-                            </label>
-                            <select class="browser-default" ng-model="defaultVoice2"
-                                    ng-options="voi.name + ' ' + voi.lang for voi in voices"
-                                    ng-change="voice2Select(defaultVoice2.name)">
-                                <!--option ng-repeat=" voi in voices"></option-->
-                            </select>
+                            <div ng-show="voices && voices.length>0" style="width: 80%;">
+                                <!--div class="center" style="margin-top: 15px;"-->
+                                    <label>voice for {{lang1}}
+                                    <input type="checkbox" ng-checked="voice1On"
+                                        ng-model="xxx" 
+                                        ng-change="voice1On = !voice1On">
+                                    </label>
+                                <!--/div-->
+                                <select class="browser-default" ng-model="defaultVoice1"
+                                        ng-options="voi.name +' '+ voi.lang for voi in voices"
+                                        ng-change="voice1Select(defaultVoice1.name)" >
+                                    <!--option ng-repeat=" voi in voices"></option-->
+                                </select>
+                                
+                                <br>
+
+                                <label>voice for {{lang2}}
+                                    <input type="checkbox" ng-checked="voice2On" 
+                                        ng-model="yyy" 
+                                        ng-click="voice2On = !voice2On">
+                                </label>
+                                <select class="browser-default" ng-model="defaultVoice2"
+                                        ng-options="voi.name + ' ' + voi.lang for voi in voices"
+                                        ng-change="voice2Select(defaultVoice2.name)">
+                                    <!--option ng-repeat=" voi in voices"></option-->
+                                </select>
                             </div>
                         </div>
                         
                     </div>    
                         <!--input ng-model="shared.string"-->
-                        <br>
+
                             <!-- shared:
                             {{shared}} ––> -->
                 
                     
                 </div>
 
+                <!-- showing vocab -->
                 <div ng-show="screen == 'words'">
                         
                         <!-- ng-show="!showWords" -->
-                        <div class="butRow" style="border- 1px solid gray">
+                        <div class="butRow center" style="border: 0px dashed black">
                             <button ng-show="screen=='words'" 
                                     ng-click="showVocab(false)">hide vocab
                             </button>
-                            <div ><button ng-model="showUserNotes" ng-click="showUserNotes=!showUserNotes">back-up</button></div>
-                            
+                            <button ng-model="showUserNotes" ng-click="showUserNotes=!showUserNotes">back-up</button>
                         </div>
                         <div ng-show="showUserNotes" 
                              class="center vertical" 
@@ -390,14 +414,14 @@
             <div id="testScreen" ng-controller="testCtrl" ng-show="screen == 'test'" >
                     <!--shared:{{testQuestions}}-->
                     
-                <div id="testField" ng-show="showTest">
+                <div id="testField" ng-show="showTest" class="animate-show animate-hide">
                             
                             <!--input ng-model="shared.string"-->
                             <!--div><h6>{{test}}</h6></div-->
                             
                                 <!--h7 ng-model="currIndex" ng-show="false">index {{currIndex}}</h7-->
                                 
-                                <div class="butRow row centered">
+                            <div class="butRow row centered">
                                     <div class="col s4 centered">
                                             <div ng-model="anim_Bads" ng-class="anim_Bads">
                                                     <h7  >{{bads}}</h7>
@@ -414,12 +438,12 @@
                                             </div>
                                     </div>
                                     
-                                </div>
+                            </div>
                             
                             <div class="single" >
                                     <div>
-                                        <h6>{{testWord}}</h6>
-                                        <h6 ng-class="{true: 'corrAnswer-hide', false: 'corrAnswer-show'}[answerHide]">
+                                        <h6 class="size2">{{testWord}}</h6>
+                                        <h6 class="size3" ng-class="{true: 'corrAnswer-hide', false: 'corrAnswer-show'}[answerHide]">
                                             {{corrAnswer}}</h6>
                                     </div>
                             </div>
@@ -446,21 +470,21 @@
                             
                 </div>
 
-
-                <div ng-show="finalResult">
-                        <h5>congrats you had {{oks}} of {{testQuestions.length}} correct</h5>
+                <!-- final results -->
+                <div ng-show="finalResult" class="animate-show animate-hide" class="center vertical">
+                        <h5 class="size3 five" style="text-align: center">congrats you had {{oks}} of {{testQuestions.length}} correct</h5>
                         <div>
-                            <div ng-show="feedback.length>0">
-                                incorrect answers:
-                                <br><br>
-                                <div  ng-repeat="word in feedback" >                        
-                                        <div>{{word.original.word[0]}}, {{word.original.word[1]}}</div>
-                                        <div> - your answer: {{word.input}}</div>
+                            <div ng-show="feedback.length>0" class="center vertical" style="margin-top:20px;">
+                                <div class="size3" style="margin-bottom: 20px">incorrect answers:</div>
+
+                                <div  ng-repeat="word in feedback" class="">                        
+                                        <div class="size3" 
+                                             style="margin-top: 0px">{{word.original.word[0]}}, {{word.original.word[1]}}</div>
+                                        <div class="size4" 
+                                             style="margin-bottom: 15px"> - your answer: {{word.input}}</div>
                                 </div>
                             </div>
-                            <button class="single" ng-click="home()">
-                                    home
-                            </button>
+                            <button class="single" ng-click="home()">home</button>
                         </div>
                 </div>
                             

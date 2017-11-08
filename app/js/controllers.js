@@ -421,8 +421,11 @@ function($scope, $rootScope, $timeout,
             $scope.screenChange = function(screen){
 
                         console.log('to screen', screen)
+
+                        // if returning from test early
                         if (screen ==='test') {
                                 screen = 'main'
+                                $scope.finalResult = 0;
                                 $scope.$parent.$broadcast('endOfTest')
                         }
                         $timeout(function(){

@@ -24,6 +24,10 @@
     100%{   color: black; 
             transform: scale(1) }
 }
+@keyframes fadeout{
+    0%   {color: black; visibility: visible;}
+    100% {color: yellow; visibility: hidden;}
+}
 /*  chage this so it works everywhere
 
     @keyframes test{
@@ -32,6 +36,16 @@
     to  { -webkit-transform: rotate(120deg) scale(2);
         color: orange; }
 }*/
+.visible{
+    color: black;
+    display: flex;
+}
+.fadeout{   
+    animation: fadeout 2s linear;
+}
+.invisible{
+    display: none;
+}
 .anim-ok{
     color: black;
     -webkit-transform: rotate(0deg);
@@ -50,4 +64,27 @@
     animation: bads .5s linear;
     
     /*transition- all linear 0.5s;*/
+}
+
+
+
+.animate-show,
+.animate-hide {
+  -webkit-transition:all linear 1s;
+  -moz-transition:all linear 1s;
+  -ms-transition:all linear 1s;
+  -o-transition:all linear 1s;
+  transition:all linear 1s;
+}
+
+.animate-show.ng-hide-remove,
+.animate-hide.ng-hide-add.ng-hide-add-active {
+  opacity: 0;
+  display: block !important;
+}
+
+.animate-hide.ng-hide-add,
+.animate-show.ng-hide-remove.ng-hide-remove-active {
+  opacity: 1;
+  display: block !important;
 }

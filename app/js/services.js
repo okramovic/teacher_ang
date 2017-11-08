@@ -89,7 +89,8 @@ app.service('exam', ['$timeout','$window',function($timeout,$window){
 
                 this.animateOk = animateOk
                 this.animateBad = animateBad
-                
+                this.fadeout = fadeout
+
                 this.blur= false
 
                 this.correct = correct
@@ -347,21 +348,30 @@ app.service('exam', ['$timeout','$window',function($timeout,$window){
                         console.log('|||||||    resolved', res)
 
                         zis.endCheck(function(end){
-                                //console.log('end?', end)
+                                
 
                                 if (end === true){
-                                        
+                                        console.log('end!! ', end)    
+                                           
                                         $timeout(function(){
-                                                zis.finalResult = 1         
-                                                zis.showTest = false
-                                                //console.log('zis.finalResult', zis.finalResult)
+                                                zis.showTest = false 
+                                                zis.fadeout(function(){
+                                                        //console.log('zis.finalResult', zis.finalResult)
+                                                        $timeout(function(){
+                                                                zis.finalResult = 1         
+                                                        })
+                                                        
 
-                                                if (!zis.feedback || zis.feedback.length === 0){
+                                                        
 
-                                                        console.log('zis.feedback',zis.feedback)
-                                                        zis.$parent.$broadcast('endOfTest')
-                                                }
-                                        }, 3000)
+                                                        if (!zis.feedback || zis.feedback.length === 0){
+                                                        
+                                                                console.log('zis.feedback',zis.feedback)
+                                                                zis.$parent.$broadcast('endOfTest')
+                                                                                                        }
+                                                })
+                                                
+                                        }, 1500)
         
                                 } else if (end === false){
         
@@ -375,17 +385,13 @@ app.service('exam', ['$timeout','$window',function($timeout,$window){
                                                 //alert("-next-")
                                         }
                                         
-                                        
-                                        
                                 }
-
 
                         })  
 
                     })
                 })
         }
-
 
 }])
 .service('vocabfile', [function(){
@@ -531,6 +537,21 @@ function animateOk(cb){
         },3500)
 
         if (cb) cb()
+}
+function fadeout(cb){
+
+        console.log( "fadeout");
+
+        this.visible = "fadeout"
+
+        /*$timeout(function(){
+        //        alert('fade')
+        },1000)*/
+        setTimeout(function(){
+                if (cb) cb()
+        },1200)
+        
+
 }
 function animateBad(cb){
 

@@ -4,19 +4,9 @@
 
 - decide what’s most important things to publish prototype
 
-
-
-- validate inputed files or pasted text, if its w mistakes, dont proceed and stay on mainscreen
-
-
-
-- when finished test, test screen fades away and after that my score fades-in
-
-
-- change initial menu to load words - make it a material. dropdown so it looks better and is organized
-
+- add breakpoints to change font-size (phones vs larger than 400px)
 - add mtrlz preloader when i tap on show vocab, bcs people might get confused that its not reacting
-
+- validate inputed files or pasted text, if its w mistakes, dont proceed and stay on mainscreen
 
 
 
@@ -24,6 +14,9 @@
 not that important? try
 - if there’s duplicates in newly added dict, clear them
 
+
+not neccessary
+- change initial menu to load words - make it a material. dropdown so it looks better and is organized
 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -55,3 +48,6 @@ not that important? try
 - tap target thing in mtrlz (in word load menu), it explains whats the app about and for
 - nicer div with dictionary selection/pasting
 - add mtrlz modal for instructions how should pasted text look like
+- accept only txt files
+- when finished test, test screen fades away and after that my score fades-in
+- make selects look good

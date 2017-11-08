@@ -79,6 +79,10 @@ i{
     background-color: rgba(63, 120, 254,.6);
     border-radius: 4px;
 }
+.btn-sm{
+    padding-left: 15px;
+    padding-right: 15px;
+}
 input[type="file"]{
     font-size: 13px;
 }
@@ -149,9 +153,10 @@ select {
     font-size: 20px;
     border: 1px solid;
     /*margin- 20px 10px;*/
-
-    text-align: center;
-    -webkit-text-align: center;
+    width: 80%;
+    margin: auto;
+    text-align-last: center;
+    -webkit-text-align-last: center;
     
 
 }
@@ -204,10 +209,27 @@ textarea::placeholder{
     color: #0040ff;
 }
 
-
+/* my rules  */
 
 .example{
     padding: 0px;
     margin: 0px;
     font-size: 18px;
+}
+
+.size2{
+    font-size: 23px;
+}
+.size3{
+    font-size: 18px;
+}
+.size4{
+    font-size: 15px;
+}
+
+.marginTop1{
+    margin-top: 15px;
+}
+.marginTop2{
+
 }
