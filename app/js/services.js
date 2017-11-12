@@ -113,7 +113,7 @@ app.service('exam', ['$timeout','$window',function($timeout,$window){
                         //alert('idk')
                         this.changeNextGo('next')
 
-                        console.log(this)
+                        //console.log(this)
 
                 }
 
@@ -166,7 +166,7 @@ app.service('exam', ['$timeout','$window',function($timeout,$window){
                             
                         
 
-                            
+                        console.log("correct?", res.res)
 
                         /* if okay answer >> animate, 
                                              after she speaks, next round
@@ -291,9 +291,6 @@ app.service('exam', ['$timeout','$window',function($timeout,$window){
                             
 
                 })
-                setTimeout(function(){
-                        //console.log('this.nextGo check',this.nextGo)
-                },2000)
                 
                 this.p2.then(function(answer){
 
@@ -310,20 +307,20 @@ app.service('exam', ['$timeout','$window',function($timeout,$window){
 
                                 if (answer === 2) {
                                         
-                                        // update currWord rating, add ok point, go to nextround
+                                        // update currWord rating, add ok point, go to next round
 
                                         zis.okAnswer(null,curWord, function(){
 
-                                                res(2)
+                                                        res(true)
                                         })
 
                                 } else if (answer === 1 && !zis.zen) 
 
                                         //  dont update any rating, add ok point, go next round
-
                                         zis.okAnswer(true, curWord, function(){
-                                                //zis.answerHide = false
-                                                res(2)
+                                                        //zis.answerHide = false
+
+                                                        res(true)
                                         })
 
                                 else if ((answer === 1 && zis.zen) || (answer === 0 && zis.zen) )
@@ -332,48 +329,52 @@ app.service('exam', ['$timeout','$window',function($timeout,$window){
 
                                         zis.badAnswer(true,curWord, input, function(){
                                                 
-                                                res(0)
+                                                res(false)
                                         })           
                                 else {
                                         //  down this word's rating, add bad point, go next round
 
                                         zis.badAnswer(false,curWord, input, function(){
                                                 
-                                                res(0)
+                                                res(true)
                                         })
                                 } 
                     })
                     prms
-                    .then(function(res){
-                        console.log('|||||||    resolved', res)
+                    .then(function(toNextRound){
+                        console.log('|||||||    resolved', toNextRound)
 
                         zis.endCheck(function(end){
                                 
 
-                                if (end === true){
-                                        console.log('end!! ', end)    
-                                           
-                                        $timeout(function(){
-                                                zis.showTest = false 
-                                                zis.fadeout(function(){
-                                                        //console.log('zis.finalResult', zis.finalResult)
-                                                        $timeout(function(){
-                                                                zis.finalResult = 1         
+                                if (end === true && toNextRound){
+
+                                        //if (toNextRound){
+                                                console.log('end!! ', end)    
+                                                
+                                                $timeout(function(){
+                                                        zis.showTest = false 
+                                                        zis.fadeout(function(){
+                                                                //console.log('zis.finalResult', zis.finalResult)
+                                                                $timeout(function(){
+                                                                        zis.finalResult = 1         
+                                                                })
+                                                                
+
+                                                                
+
+                                                                if (!zis.feedback || zis.feedback.length === 0){
+                                                                
+                                                                        console.log('zis.feedback',zis.feedback)
+                                                                        zis.$parent.$broadcast('endOfTest')
+                                                                                                                }
                                                         })
                                                         
-
-                                                        
-
-                                                        if (!zis.feedback || zis.feedback.length === 0){
-                                                        
-                                                                console.log('zis.feedback',zis.feedback)
-                                                                zis.$parent.$broadcast('endOfTest')
-                                                                                                        }
-                                                })
-                                                
-                                        }, 1500)
+                                                }, 1500);
+                                        //}
         
-                                } else if (end === false){
+                                } else //if (end === false)
+                                {
         
                                         //console.log('res?', res)
                                         //console.log(' o o o o o zis.nextGo',zis.getNextGo())
@@ -540,7 +541,7 @@ function animateOk(cb){
 }
 function fadeout(cb){
 
-        console.log( "fadeout");
+        //console.log( "fadeout");
 
         this.visible = "fadeout"
 
@@ -712,7 +713,7 @@ function changeLevel(word, change){
 }
 function newRound(string){
         //console.log('from:',  this.from)
-        console.log('this',this);
+        //console.log('this',this);
         if (string ==='first' ) {this.round=0; string = null;
                 
         }

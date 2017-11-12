@@ -1,26 +1,26 @@
 
 
 - - - - - - - - - Teacher - TO DO  - - - - - - - — - - - -
-
 - decide what’s most important things to publish prototype
 
 
-- try to autochoose voices and langs for cz, de, eng  ||  or save them in local storage
 
 
-- last round with zen mode ignores wrong answers and quits the test
 - mozilla fallback solution when material-icons dont work
+
 
 
 
 not that important? try when fresh
 
+
 - if there’s duplicates in newly added dict, clear them
 - add mtrlz preloader when i tap on show vocab, bcs people might get confused that its not reacting
 - when loading words - alert user on each wrong word in his file until all are fine? (seems like hell for a person, but it ll prevent error later)
 
+
 not neccessary
-- change initial menu to load words - make it a material. dropdown so it looks better and is organized
+- change initial menu “load new words” - make it a material. dropdown so it looks better and is organized
 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -64,3 +64,8 @@ not neccessary
 - set fallback font for mozilla (palatino linotype/book antiqua)
 - mater.-icons are offline
 - add breakpoints to change font-size (phones vs larger than 400px)
+
+12.nov.17
+- autochoose voices and langs for cz, de, eng  ||  or save them in local storage
+- select on active or focus or what has some outline
+- last round with zen mode ignores wrong answers and quits the test

@@ -68,51 +68,93 @@ function($scope, $rootScope, $timeout,
                 // add dropbox get file and upload file functionality to show off
                 
     
-                //$window.localStorage.removeItem("_words_en_-_est")
-                //$window.localStorage.removeItem("userFileNames")
-                //$window.localStorage.removeItem("__ test.txt")  
-                //console.log($window.localStorage.getItem("_words_cz_-_de"))
+                        //$window.localStorage.removeItem("_words_en_-_est")
+                        //$window.localStorage.removeItem("userFileNames")
+                        //$window.localStorage.removeItem("__ test.txt")  
+                        //console.log($window.localStorage.getItem("_words_cz_-_de"))
 
 
-                //
-                        //let xx= 
-                        //console.log(  $window.localStorage.getItem("test")            )
-                        //console.log(  $window.localStorage.getItem("userFileNames")   )
-                        //console.log(  $window.localStorage.getItem("__ test.txt")     )
-                        //console.log(  angular.fromJson($window.localStorage.getItem("_words_en_-_est") ))
-                        //console.log(     )
+                        //
+                                //let xx= 
+                                //console.log(  $window.localStorage.getItem("test")            )
+                                //console.log(  $window.localStorage.getItem("userFileNames")   )
+                                //console.log(  $window.localStorage.getItem("__ test.txt")     )
+                                //console.log(  angular.fromJson($window.localStorage.getItem("_words_en_-_est") ))
+                                //console.log(     )
 
             // alert("width " + window.innerWidth)
-            //console.log( window)
 
             $scope.$timeout = $timeout
         
-            
-            if (window.speechSynthesis) {
+            function loadVoices(){
+                if (window.speechSynthesis) {
 
-                        var synth = window.speechSynthesis;
+                                var synth = window.speechSynthesis;
+                        
+
+                                // promisify this
+                                $timeout(function(){
+                                        $scope.defaultVoiceIndexes = [null, null]
+                                        $scope.voices = []
+                                        $scope.voices = synth.getVoices();    
+                                        console.log($scope.voices)
+
+                                        $timeout(function(){
+
+                                                [$scope.lang1, $scope.lang2].forEach(function(lang, ind){
+                                                        console.log("lang", lang)
+        
+                                                        if (lang === 'cz' ){
+                                                                $scope.defaultVoiceIndexes[ind] = $scope.voices.findIndex(function(voice){
                 
+                                                                                                                        //console.log(voice.lang.toLowerCase().includes('cz'))
+                                                                                                                        return voice.lang.toLowerCase().includes('cz') || voice.lang.toLowerCase().includes('cs')
+                                                                                                                        })
+                                                                console.log('$scope.defaultVoice1Index', $scope.defaultVoiceIndexes)
+        
+                                                        } else if (lang === 'en'){
+        
+                                                                $scope.defaultVoiceIndexes[ind] = $scope.voices.findIndex(function(voice){
+                
+                                                                                                                        //console.log(voice.lang.toLowerCase().includes('cz'))
+                                                                                                                        return voice.lang.toLowerCase().includes('gb') //|| voice.lang.toLowerCase().includes('cs')
+                                                                                                                        })
+                                                        } else if (lang === 'de'){
 
-                        // promisify this
-                        $timeout(function(){
-                                $scope.voices = []
-                                $scope.voices = synth.getVoices();    
-                                //console.log($scope.voices)
+                                                                $scope.defaultVoiceIndexes[ind] = $scope.voices.findIndex(function(voice){
+                
+                                                                                                                        //console.log(voice.name)
+                                                                                                                        return voice.name ==="Google Deutsch"  ||   voice.name === "German Germany"
+                                                                                                                        })
+                                                        }
+        
+        
+                                                })
+                                                $scope.defaultVoice1 = $scope.voices[$scope.defaultVoiceIndexes[0]]
+                                                $scope.defaultVoice2 = $scope.voices[$scope.defaultVoiceIndexes[1]]
 
-                                $scope.defaultVoice1 = $scope.voices[0]
-                                $scope.defaultVoice1Index = 0
-                                $scope.defaultVoice2Index = 6
-                                $scope.defaultVoice2 = $scope.voices[$scope.defaultVoice2Index]
 
-                                var utterThis = new SpeechSynthesisUtterance('grüss gott grüss gott');
-                                utterThis.voice = $scope.voices[6];
-                                utterThis.lang = "de-DE"
-                                utterThis.onend = function(){
-                                        console.log('end speech')
-                                }
-                                //console.log(utterThis)
-                                //synth.speak(utterThis);
-                        }, 1200)
+                                        }, 500)
+                                        
+                                        
+                                        //$scope.defaultVoice1 = $scope.voices[0]
+                                        //$scope.defaultVoice1Index = 0
+                                        
+                                        //$scope.defaultVoice2Index = 0 //6
+                                        
+                                        //$scope.defaultVoice1 = $scope.voices[$scope.defaultVoice1Index]
+
+
+                                        /*var utterThis = new SpeechSynthesisUtterance('grüss gott grüss gott');
+                                        utterThis.voice = $scope.voices[6];
+                                        utterThis.lang = "de-DE"
+                                        utterThis.onend = function(){
+                                                console.log('end speech')
+                                        }*/
+                                        //console.log(utterThis)
+                                        //synth.speak(utterThis);
+                                }, 1200)
+                }
             }
             //console.log('digest check')
 
@@ -131,7 +173,7 @@ function($scope, $rootScope, $timeout,
                 return  fns !== null && fns !== undefined
             }
             
-            //$scope.
+
             function loadLocalStorage(){
                 "use strict"
                         
@@ -157,8 +199,9 @@ function($scope, $rootScope, $timeout,
 
                         
             }
-            
             loadLocalStorage()
+
+
             $scope.loadLSDict = function(dict){
                         "use strict"
 
@@ -190,7 +233,8 @@ function($scope, $rootScope, $timeout,
 
                                 $scope.setWords(data.slice(1))
 
-                                console.log("userFile.", $scope.currentFilename)
+                                //console.log("userFile.", $scope.currentFilename)
+                                loadVoices()
                         })
 
             } 
@@ -374,7 +418,6 @@ function($scope, $rootScope, $timeout,
                         //$scope.$broadcast('newDict', parseText(txt))
                         
                         $timeout(function(){
-                                        
                                         $scope.words = WORDS//parseText(txt)
                                         $scope.setWords(WORDS)
 
@@ -383,7 +426,7 @@ function($scope, $rootScope, $timeout,
 
                                         // to hide open file / copy-paste div on initial screen
                                         $scope.chooseNew = false
-                                        //console.log($scope.words)
+                                        loadVoices();
                                         
                         },0)
                         //$scope.
@@ -393,7 +436,6 @@ function($scope, $rootScope, $timeout,
 
 
             // when using fileReader
-            //let evCounter =0
             $scope.$on('newDict', function(e,d){
                         "use strict"
 
@@ -445,6 +487,7 @@ function($scope, $rootScope, $timeout,
                                 $scope.lang1 = d.langs.a
                                 $scope.lang2 = d.langs.b
                                 $scope.screen = "main"
+                                loadVoices();
 
                                 $scope.setWords(d.words)
 
@@ -465,6 +508,7 @@ function($scope, $rootScope, $timeout,
                         $scope.lang1 = 'en'
                         $scope.lang2 = 'de'
                         $scope.screen = "main"
+                        loadVoices();
 
                         $scope.setWords($scope.words)
                         console.log("set words  >\n",$scope.getWords());
@@ -520,7 +564,7 @@ function($scope, $rootScope, $timeout,
 
             // voice business
 
-            $scope.voice1On = false
+            $scope.voice1On = true
             $scope.voice2On = true
             $scope.defaultVoice1 = null
             $scope.defaultVoice2 = null
@@ -530,7 +574,7 @@ function($scope, $rootScope, $timeout,
 
             })}
             $scope.voice2Switch = function(){
-                                console.log('now voice2', $scope.voice2On )
+                                //console.log('now voice2', $scope.voice2On )
                         $timeout(function(){
                                 $scope.voice2On = !$scope.voice2On
                                 console.log('now voice2', $scope.voice2On )
@@ -576,9 +620,9 @@ function($scope, $rootScope, $timeout,
             $scope.defaultLength = $scope.lengths[1]
             $scope.testLength = $scope.lengths[1]
 
-            $scope.testTypes = ['repeat previous','newest','checked ones','all words','unknown']
-            $scope.selectedType = $scope.testTypes[1]
-            $scope.prevType = $scope.testTypes[1]
+            $scope.testTypes = ['repeat previous','checked ones','newest','all words','unknown']
+            $scope.selectedType = $scope.testTypes[2]
+            $scope.prevType = $scope.testTypes[2]
 
             //$scope.testType = $scope.selectedType
             //console.log('$scope.selectedType', $scope.selectedType)
@@ -723,6 +767,7 @@ function($scope, $rootScope, $timeout,
 
                         $scope.$parent.$broadcast('dirChange',$scope.direction)
                 }
+                // test type selection
                 $scope.typeSelection = function(type){
                         $timeout(function(){
                                 $scope.prevType = $scope.selectedType
@@ -739,7 +784,7 @@ function($scope, $rootScope, $timeout,
                         //console.log($scope.screen)
                 },2000)
 
-
+                //  main button
                 $scope.practice = function practice(){
                         
                         $scope.showWords = false
@@ -762,8 +807,8 @@ function($scope, $rootScope, $timeout,
                                                 // defaultVoice1Index
                                                 v1on: $scope.voice1On,
                                                 v2on: $scope.voice2On,
-                                                v1: ($scope.voice1) ? $scope.voice1 : $scope.defaultVoice1Index,
-                                                v2: ($scope.voice2) ? $scope.voice2 : $scope.defaultVoice2Index
+                                                v1: ($scope.voice1) ? $scope.voice1 : $scope.defaultVoiceIndexes[0],
+                                                v2: ($scope.voice2) ? $scope.voice2 : $scope.defaultVoiceIndexes[1]
                                 }
                                 console.log('voiceToSend', voiceToSend)
                                 //alert(JSON.stringify(voiceToSend))
@@ -1162,6 +1207,8 @@ function($scope, $rootScope, $timeout,
                 //$scope.shared = testShare.shrd
 }])
 
-function startTest(){
+
+
+/*function startTest(){
         console.log(' ---- -  test started - ---- ')
-}
+}*/

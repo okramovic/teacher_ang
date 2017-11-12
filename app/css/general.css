@@ -67,6 +67,14 @@ body {
     min-width: 48px;
     min-height: 48px;
 }
+.modal-footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    float: left;
+}
+
+
 .row{
     width: 100%;
     
@@ -170,14 +178,15 @@ a:link, a:visited, a:active{
 
 select {
     
-    border: 1px solid;
+    border: none; /*1px solid;
     /*margin- 20px 10px;*/
     width: 80%;
     margin: auto;
     text-align-last: center;
     -webkit-text-align-last: center;
-    
-
+}
+select:focus{
+    outline: none;
 }
 
 h3, h4, h5, h6{

@@ -147,10 +147,13 @@
                                     <div class="modal-content">
                                         <div class="center vertical">
                                             <h4 class="size1">Welcome</h4>
-                                            <p  class="size3">welcome message for new users</p>
+                                            <p  class="size3">This app was made so everyone can practice vocabulary when learning new languages. 
+                                                              You can actually practice any word or text pairs you can think of! </br></br>
+                                                              May the force be with you.</p>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
+                                        <a href="https://twitter.com/okram_ovic" target="_blank" class="size2 modal-action modal-close waves-effect waves-green btn-flat">@</a>
                                         <a href="#!" class="size2 modal-action modal-close waves-effect waves-green btn-flat">ok</a>
                                     </div>
                             </div>
@@ -494,17 +497,18 @@
                 <div ng-show="finalResult" class="animate-show animate-hide" class="center vertical">
                         <h5 class="size3 five" style="text-align: center">congrats you had {{oks}} of {{testQuestions.length}} correct</h5>
                         <div>
-                            <div ng-show="feedback.length>0" class="center vertical" style="margin-top:20px;">
+                            <div ng-show="feedback.length>0" class="center vertical marginTop15" style="width: 80%; margin: auto;border-bottom: 1px solid gray">
                                 <div class="size3" style="margin-bottom: 20px">incorrect answers:</div>
 
                                 <div  ng-repeat="word in feedback" class="">                        
                                         <div class="size3" 
-                                             style="margin-top: 0px">{{word.original.word[0]}}, {{word.original.word[1]}}</div>
+                                             style="margin-top: 0px">{{word.original.word[0]}}. {{word.original.word[1]}}</div>
                                         <div class="size4" 
-                                             style="margin-bottom: 15px"> - your answer: {{word.input}}</div>
+                                             style="margin-bottom: 15px">your answer: {{word.input}}</div>
                                 </div>
+                                
                             </div>
-                            <button class="single" ng-click="home()">home</button>
+                            <button class="single marginTop15" ng-click="home()">home</button>
                         </div>
                 </div>
                             
