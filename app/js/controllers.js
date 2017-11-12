@@ -82,7 +82,8 @@ function($scope, $rootScope, $timeout,
                         //console.log(  angular.fromJson($window.localStorage.getItem("_words_en_-_est") ))
                         //console.log(     )
 
-            
+            // alert("width " + window.innerWidth)
+            //console.log( window)
 
             $scope.$timeout = $timeout
         
@@ -125,7 +126,8 @@ function($scope, $rootScope, $timeout,
                 // get all previously used vocab names (storage/filenames)
                 // let user choose which last session to open
 
-                let fns = $window.localStorage.getItem("userFileNames")        // userFileNames
+                let fns = $window.localStorage.getItem("userFileNames")
+                //console.log("filenames in LS ", fns)
                 return  fns !== null && fns !== undefined
             }
             
@@ -137,18 +139,16 @@ function($scope, $rootScope, $timeout,
 
                                         $window.localStorage.getItem("userFileNames")
 
-                                )
+                                        )
                         /*if (names!== null && names!== undefined)
-
-                        names = names.map(function(item){
-
+                                names = names.map(function(item){
                                                 return item.name
                                         })*/
 
                         
                         $timeout(function(){
-
-                                $scope.storedDicts = names
+                                if (names!== null) $scope.storedDicts = names
+                                else $scope.storedDicts = []
                                 $scope.mainScreen = true
                                 
                                 console.log("storage dicts\n",$scope.storedDicts)
@@ -303,12 +303,22 @@ function($scope, $rootScope, $timeout,
                                 console.log("delete index", ind, names)
                                 //console.log("deleted", dict)
 
-                                // save new index of dicts && del the dict
-                                $window.localStorage.setItem("userFileNames",
-                                                              angular.toJson(names))
+                                if (Array.isArray(names) && names.length>0){
+
+                                        // save new index of dicts && del the dict
+                                        $window.localStorage.setItem("userFileNames",
+                                                                angular.toJson(names))
+
+                                        console.log("userFilenames: ", $window.localStorage.getItem("userFileNames"))
+
+                                } else if (Array.isArray(names) && names.length === 0){
+
+                                        $window.localStorage.removeItem("userFileNames")
+                                        console.log("userFilenames: ", $window.localStorage.getItem("userFileNames"))
+                                }
+
                                 $window.localStorage.removeItem(dict)
-                                
-                                
+
                                 $timeout(function(){
                                         //$scope.storedDicts = $window.localStorage.getItem("userFileNames")
                                         $scope.storedDicts.splice(ind, 1);
@@ -330,17 +340,31 @@ function($scope, $rootScope, $timeout,
                         //$scope.
                         //const newwords = parseText(txt)
                         
-                        
-                        //
 
                         let langs = getLangs(txt)
                         $scope.lang1 = langs.a
                         $scope.lang2 = langs.b
-                        
-                                userFile.currentFilename = "_words_" + langs.a.toString() + "_-_" + langs.b.toString()
-                                $scope.currentFilename = userFile.currentFilename
-                        const WORDS = //mergeToSave([ $scope.lang1, $scope.lang2 ],                          
-                             parseText(txt) //)
+                        const WORDS  = parseText(txt)
+
+                        console.log("langs", $scope.lang1, $scope.lang2)
+
+                        if ($scope.lang1 == undefined || $scope.lang1 == "" || $scope.lang1 === null 
+                            ||
+                            $scope.lang2 == undefined || $scope.lang2 == "" || $scope.lang2 === null        
+                        ){
+                                alert("one of language indications is missing.\n" + 
+                                      "fill it in please\n(in very first line)");
+                                return
+                        } else if (! Array.isArray(WORDS) || WORDS.length === 0 ){
+                                alert("there seem to be no words in your vocab.\n" +
+                                      "you'll need some to use this app");
+                                return
+                        }
+
+
+                        userFile.currentFilename = "_words_" + langs.a.toString() + "_-_" + langs.b.toString()
+                        $scope.currentFilename = userFile.currentFilename
+                        //mergeToSave([ $scope.lang1, $scope.lang2 ],)
 
                         console.log("WORDS", WORDS)
                         console.log("uploading words fun:", userFile.currentFilename)//,"langs:", langs)
@@ -356,6 +380,9 @@ function($scope, $rootScope, $timeout,
 
                                         $scope.mainScreen = true
                                         $scope.screen = "main"
+
+                                        // to hide open file / copy-paste div on initial screen
+                                        $scope.chooseNew = false
                                         //console.log($scope.words)
                                         
                         },0)
@@ -366,43 +393,53 @@ function($scope, $rootScope, $timeout,
 
 
             // when using fileReader
-            let evCounter =0
+            //let evCounter =0
             $scope.$on('newDict', function(e,d){
-                    "use strict"
-
-                    if (evCounter > 0){
-                                //evCounter = 0 
-                                return
-                    } else { evCounter++
+                        "use strict"
 
                         console.log("new data")
-                        console.log('evCounter', evCounter)
                         // get fileName and store it into local storage under key userFileNames
 
                         //alert('oh ma')
                         //,e, "\ndata\n", "is array?",Array.isArray(d.words))
 
                         
-                        let ts2 = d.words.map(function(el){
+                        /*let ts2 = d.words.map(function(el){
 
                                 return el.join(". ")
                         })
                         let toStore = '- - - (do not remove this line) - - -' + 
                                         '\n' + 
-                                        ts2.join("\n")
-
+                                        ts2.join("\n")*/
                         const WORDS = d.words
+
+                        if (d.langs.a == undefined || d.langs.a == "" || d.langs.a === null 
+                            ||
+                            d.langs.b == undefined || d.langs.b == "" || d.langs.b === null        
+                        ){
+                                alert("one of language indications is missing.\n" + 
+                                      "fill it in please\n(in very first line)");
+                                return
+
+                        } else if (! Array.isArray(WORDS) || WORDS.length === 0 ){
+                                alert("there seem to be no words in your vocab.\n" +
+                                      "you'll need some to use this app");
+                                return
+                        }
+
+                        
                         //$timeout
                         //(function(){
 
-                                userFile.currentFilename = d.filename
-                                $scope.currentFilename = userFile.currentFilename
+                                
                                 //console.log('userFile', userFile)
                                 //$scope.idk = ".. 1 4 2 3 .."
                                 
                         //})
                         console.log(d)
                         $scope.$apply(function(){
+                                userFile.currentFilename = d.filename
+                                $scope.currentFilename = userFile.currentFilename
                                 $scope.storedDicts.push(d.filename)
                                 $scope.words = d.words
                                 $scope.lang1 = d.langs.a
@@ -410,13 +447,40 @@ function($scope, $rootScope, $timeout,
                                 $scope.screen = "main"
 
                                 $scope.setWords(d.words)
+
+                                // to hide open file / copy-paste div on initial screen
+                                $scope.chooseNew = false
                         })
 
                         //$scope.
-                        saveLocSto(userFile.currentFilename, $scope.lang1, $scope.lang2, WORDS)
+                        saveLocSto(userFile.currentFilename, 
+                                   $scope.lang1, $scope.lang2, WORDS)
                         loadLocalStorage()
-                    }
+                    
             })
+
+            $scope.loadExample = function(){ 
+                $timeout(function(){
+                        $scope.words = $scope.example2
+                        $scope.lang1 = 'en'
+                        $scope.lang2 = 'de'
+                        $scope.screen = "main"
+
+                        $scope.setWords($scope.words)
+                        console.log("set words  >\n",$scope.getWords());
+                        
+                        userFile.currentFilename = "_words_en_-_de"
+                        $scope.currentFilename = userFile.currentFilename
+
+                        saveLocSto(userFile.currentFilename,
+                                $scope.lang1, $scope.lang2,$scope.words)
+                        loadLocalStorage()
+
+                        // to hide open file / copy-paste div on initial screen
+                        $scope.chooseNew = false
+                })
+                
+            }
 
             $scope.screenChange = function(screen){
 
@@ -443,11 +507,10 @@ function($scope, $rootScope, $timeout,
             }
 
             $scope.parseText = vocabfile.parseText
-
+            //$scope.storedDicts = []
             $scope.loadDictWay = ""
 
-            //$scope.screen = "initial"
-            //console.log('$scope.screen', $scope.screen)
+            
 
             $scope.mainScreen = true
 
@@ -575,26 +638,7 @@ function($scope, $rootScope, $timeout,
                 }
 
 
-                $scope.loadExample = function(){ 
-                        $timeout(function(){
-                                $scope.words = $scope.example2
-                                $scope.lang1 = 'en'
-                                $scope.lang2 = 'de'
-                                $scope.screen = "main"
-
-                                $scope.setWords($scope.words)
-                                console.log("set words  >\n",$scope.getWords());
-                                
-                                userFile.currentFilename = "_words_en_-_de"
-                                $scope.currentFilename = userFile.currentFilename
-
-                                saveLocSto(userFile.currentFilename,
-                                        $scope.lang1, $scope.lang2,$scope.words)
-                                loadLocalStorage()
-
-                        })
-                        
-                }
+                
                 function dateIt(){
                         
                                 let d = new Date()
@@ -648,7 +692,7 @@ function($scope, $rootScope, $timeout,
                                 }
         
                                 
-                                //console.log("screen", show, $scope.screen)
+                                console.log("screen", $scope.screen)
                                 
                         })
                         //$scope.$apply(function(){})

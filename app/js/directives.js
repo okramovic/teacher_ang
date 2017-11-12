@@ -33,12 +33,11 @@ app/*.directive('checkB',function(){
             },
             template: '<div id="vocab" ng-repeat="w in words " class="">'+
 
-
                                 '<div  ng-if="lastGroup($index) === false && $index % 10 === 0" '+
+                                        '>'+
+                                        '</br class="size5">' +
 
-                                        'style="display: flex; align-items:center; justify-content: center"> ' +
                                         '{{$index+1}}.-{{$index+10}}.   '+
-
                                         '<label >'+
                                         '<input  type="checkbox" class="browser-default" ng-model="idk"      ' +
                                         //'ng-checked="allchecked({{$index}}) == true"             ' +
@@ -47,8 +46,11 @@ app/*.directive('checkB',function(){
 
                                 '</div>' + 
 
-                                '<div ng-model="www" ng-if="lastGroup($index) === true && $index % 10 === 0"'+
-                                        '> {{$index+1}}.-{{words.length}}.'+
+                                '<div ng-if="lastGroup($index) === true && $index % 10 === 0"'+
+                                        'ng-model="www"> '+
+                                        '</br class="size5">'+
+
+                                        '{{$index+1}}.-{{words.length}}.'+
 
                                         '<label >'+
                                         '<input  type="checkbox" class="browser-default" ng-model="www"      ' +
@@ -57,8 +59,8 @@ app/*.directive('checkB',function(){
                                         '</label>'  +
                                 '</div>' +
 
-                                '<div class="word" ng-model="w[2]"  '+
-                                'ng-class="{&quot;zero&quot;: w[2]==0, '+
+                                '<div class="word" ng-model="w[2]"  '  +
+                                     'ng-class="{&quot;zero&quot;: w[2]==0, '  +
 
                                         ' &quot;one&quot;   : w[2] == 1, '+
                                         ' &quot;two&quot;   : w[2] == 2, '+
@@ -69,8 +71,9 @@ app/*.directive('checkB',function(){
                                         ' &quot;picked&quot;: picked($index)}"'+
                                                 '>' +
                                         '{{w[0]}} {{w[1]}} {{w[2]}}'+
-                                        
-                                /*'<div  ng-model="wx"  '+
+                                '</div>'+
+                        '</div>' ,
+            /*'<div  ng-model="wx"  '+
                                 'ng-class="{0: &quot;zero&quot;, 1: &quot;one&quot;,'+
                                         ' 2: &quot;two&quot; , 3: &quot;three&quot;,'+
                                         ' 4: &quot;four&quot;, 5: &quot;five&quot;,'+
@@ -79,26 +82,11 @@ app/*.directive('checkB',function(){
                                         '{{w[0]}} {{w[1]}} {{w[2]}}'+
 
                                                // '<br> max {{words.length}} - {{max}}..'   +*/
-                                '</div>'+
-                        '</div>' ,
             /* 
                         '<input  type="checkbox"  smt="{{$index}}" ' +
                                 ' ng-checked="slct.indexOf({{$index}}) > -1"    ' +        
                                 'ng-model="smt"   ng-change="change({{$index}})"  >'+
             */
-            /*template2: '<div ng-repeat="w in wo | orderBy:e:ascen  track by $index">'+
-                           '<div  ng-if="$index % 10 ==0" > {{$index+1}}. </div>' + 
-                           '<div  ng-model="wx"  '+
-                            'ng-class="{0: &quot;zero&quot;, 1: &quot;one&quot;,'+
-                                      ' 2: &quot;two&quot; , 3: &quot;three&quot;,'+
-                                      ' 4: &quot;four&quot;, 5: &quot;five&quot;,'+
-                                      ' 6: &quot;six&quot;}[w[2]]"'+
-                                        '>' +
-                                '{{w[0]}} {{w[1]}} {{w[2]}}, index: {{$index}}'+
-                                '<input smt="{{$index}}"  ng-model="smt"  '+
-                                    'type="checkbox" ng-change="change({{$index}})"  >'+
-                      '</div></div>'    */    
-            
             link: function(scope, el, att){
                 //console.log("att", att)
                 //console.log("change",scope.change)
@@ -179,8 +167,6 @@ app/*.directive('checkB',function(){
                 //console.log($scope)
             }
     }
-        //'<check-b   data-i="{{$index}}"  ng-model="{{$index}}" ch="change(222)"></check-b> </div>' +
-
 })
 .directive('testLength', function(){
         return {
@@ -214,11 +200,6 @@ app/*.directive('checkB',function(){
 
                         scope.blur = false
                         
-
-                        
-                        //el[0].focus()
-                        //el.focus()
-                        //console.log(attr)
                         scope.$watch('blur', function(idk){
                                 //alert('halo')
 
@@ -241,11 +222,6 @@ app/*.directive('checkB',function(){
                                 else alert('else')
                         },true)
 
-
-                        /*scope.$watch(scope.blur, function(val){
-                                
-                                console.log('scope blur',scope.blur," mmm")
-                        })*/
                         scope.$on('blurit', function(){
                                 console.log('wwwwwwww   blurit wwww')
 
@@ -257,6 +233,7 @@ app/*.directive('checkB',function(){
 
 
 }])
+// file reader
 .directive('fileSelect', ['$window',function($window){
         return{
                 restrict: 'A',
@@ -274,16 +251,20 @@ app/*.directive('checkB',function(){
                         //console.log(el)
                         //console.log(attr)
 
-                        
-
-
                         el.bind("change", function(e){
                                //, e.target.files[0])
                                console.log("file change")
 
+                               if (e.target.files[0].type !== 'text/plain'){
+                                        alert("only .txt files accepted\n" + 
+                                              "if you can't change this, try option to copy + paste"+
+                                              " the text of the file itself")
+                                        return null
+                               }
                                var r = new FileReader()
 
                                let filename = e.target.files[0].name
+                               console.log(e.target.files[0])
 
                                r.onloadend = function(e){
 
@@ -292,7 +273,7 @@ app/*.directive('checkB',function(){
                                         //let noNotes = clearNotes(e.target.result)
                                         //console.log("file content\n", noNotes)
                                         //scope.words = noNotes
-                                        //console.log(scope)
+                                        
 
                                         //scope.upload( clearNotes(e.target.result) )
                                         console.log('load end  -->  broadcast')

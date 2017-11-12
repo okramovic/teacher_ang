@@ -3,14 +3,22 @@
     
     align-self: center;
     width: 100%;
+    
 
     margin: 0px;
     padding: 0px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 h4{
     text-align: center;
 }
+
+
 .single_center{
     display: flex;
     justify-content: center;
@@ -27,17 +35,11 @@ h4{
 }
 
 .dictionary{
-
     text-align: center;
-}
-#vocab{
-    
 }
 #vocab .word{
     width: 80%;
     margin: auto;
-    font-size: 18px;
-
 }
 .titleEnabled{
     color: black
@@ -49,10 +51,9 @@ h4{
     user-select: none;
     -webkit-user-select: none;
 }
-
-.picked{
-    
+.picked{ 
     /*position: relative;
     left: 20px;*/
-    background-color: rgb(201, 244, 249);
+    /*background-color: rgb(201, 244, 249);*/
+    border-left: 1px solid black;
 }

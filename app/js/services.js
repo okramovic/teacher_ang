@@ -758,6 +758,7 @@ function newRound(string){
         }
         
 }
+
 function prepareExam (type,len,words,cb){
     
                 console.log('its ',type,'length', len)
@@ -955,34 +956,7 @@ function shared(val){
             //}
 }
 
-function upload(text){
 
-        alert(' u z š č x p n + č š c í p á š n c p \n\n   link ' + text)
-        
-        //let zis = this
-
-                //somewords = this.parseText(text)//, function(words){
-
-        
-                //this.mainScreen = true
-                //console.log('this',this)
-                //this.$digest()
-
-        //this.
-        /*$timeout(function(){
-                console.log('this ||||/////',this)
-
-                        zis.words = somewords
-                        zis.mainScreen = 'aloha'
-        },0)*/
-        //this.$apply()
-                /*console.log(this)
-                console.log(zis)
-                /*zis.$timeout(function(){
-                },0)*/
-        //})
-
-}
 function downloadDict(notes){
 
         let x = this.userNotes
@@ -1030,8 +1004,8 @@ function stringToArr(str){
         let filteredArray = str.split(/\n/g)
         
         filteredArray = filteredArray.filter(function(el){        
-
-                return el.toString().trim() !== "" && el.split(".").length > 1
+                                                   // there's need to check later if both languages were indicated
+                return el.toString().trim() !== "" //&& el.split(".").length > 1
 
         })
         .map(function(el) {
@@ -1072,3 +1046,38 @@ function mergeToSave(langs, words){
         return res
 }
 
+
+
+
+/*
+        old garbage
+
+function upload(text){
+
+        alert(' u z š č x p n + č š c í p á š n c p \n\n   link ' + text)
+        
+        //let zis = this
+
+                //somewords = this.parseText(text)//, function(words){
+
+        
+                //this.mainScreen = true
+                //console.log('this',this)
+                //this.$digest()
+
+        //this.
+        /*$timeout(function(){
+                console.log('this ||||/////',this)
+
+                        zis.words = somewords
+                        zis.mainScreen = 'aloha'
+        },0)
+        //this.$apply()
+                /*console.log(this)
+                console.log(zis)
+                /*zis.$timeout(function(){
+                },0)
+        //})
+
+}
+*/
