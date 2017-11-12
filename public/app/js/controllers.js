@@ -97,7 +97,7 @@ function($scope, $rootScope, $timeout,
                                         $scope.defaultVoiceIndexes = [null, null]
                                         $scope.voices = []
                                         $scope.voices = synth.getVoices();    
-                                        console.log($scope.voices)
+                                        //console.log($scope.voices)
 
                                         $timeout(function(){
 

@@ -1,5 +1,4 @@
-# teacher_ang
-practice your own vocabulary knowledge
+Welcome to the Teacher
+=========================
 
-
-some info will come soon - now just practicing git
+practice your own vocabulary

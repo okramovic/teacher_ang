@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html >
     <head>
-        <meta charset="utf8">
+        <meta charset="utf-8">
+      
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">  
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>teacher v1</title>
         
         <!-- Compiled and minified CSS -->
-        <!--link rel="stylesheet"       
-        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"-->
-        <!--link rel="stylesheet"  href="./app/libs/materialize.0.100.2.min.css"-->
-        <link rel="stylesheet"  href="./app/libs/materialize.0.98.1.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
+        <!--link rel="stylesheet"  href="./materialize.0.98.1.min.css"-->
+        <!--link rel="stylesheet" href="./app/libs/materialize.0.100.2.min.css"-->
+        
 
         <link rel="stylesheet"  href="./app/css/general.css" >
         <link rel="stylesheet"  href="./app/css/testDiv.css" >
@@ -17,8 +20,8 @@
         <link rel="stylesheet"  href="./app/css/animations.css" >
         <link rel="stylesheet"  href="./app/css/mediaQuerries.css" >
         
-        <!--link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"-->
-        <link rel="stylesheet" type="text/css" href="./app/css/material-icons.css" >
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--link rel="stylesheet" type="text/css" href="./app/css/material-icons.css" -->
                 
 
 
@@ -27,25 +30,28 @@
         <!--script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script-->        
                 
         
-        <!--script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script-->
-        <script type="text/javascript" src="./app/libs/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <!--script type="text/javascript" src="./app/libs/jquery-3.1.1.min.js"></script-->
 
-                <script src="./app/libs/angular.1.5.5.min.js"></script>
-                <!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script-->
+      
+        <!--script src="./app/libs/angular.1.5.5.min.js"></script-->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 
-                <!--script type="text/javascript" 
-                    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script-->
-                <script src="./app/libs/materialize.0.98.1.min.js"></script>
+      
+        <script type="text/javascript" 
+                src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+        <!--script src="./app/libs/materialize.0.98.1.min.js"></script-->
 
 
-                <!--script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-materialize/0.2.2/angular-materialize.min.js"></script-->
-                <script src="./app/libs/angular-materialize.0.2.2.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-materialize/0.2.2/angular-materialize.min.js"></script>
+        <!--script src="./app/libs/angular-materialize.0.2.2.min.js"></script-->
 
-                <!--script src="./app/libs/angular.1.6.6.min.js"></script-->
-                <script src="./app/libs/angular-animate.1.5.5.min.js" ></script>
-                <!--script src="https://code.angularjs.org/1.5.5/angular-animate.min.js" ></script-->
+        
+      
+        <!--script src="./app/libs/angular-animate.1.5.5.min.js" ></script-->
+        <script src="https://code.angularjs.org/1.5.5/angular-animate.min.js" ></script>
                 
-                <!--script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-materialize/0.2.2/angular-materialize.min.js"></script-->
+                
 
         
                 <script src="./app/js/teacherApp.js"></script>
@@ -57,7 +63,7 @@
         
                 
     </head>
-<body ng-app='teacherApp' style="border: 0px solid red"
+<body ng-app="teacherApp" style="border: 0px solid red"
     ng-class='{"forWords": screen == "words" || screen=== undefined, "fullVH": screen === "main",
              }'>
         
@@ -116,7 +122,7 @@
                     <div class="col sm2" style="width: 15%; border: 0px dashed;
                                             display: flex; justify-content: center; align-items: center">
                         <div ng-show="screen == undefined || screen == 'initial'">
-                                <a class='btn btn-sm' data-target='introModal' modal>
+                                <a class="btn btn-sm" data-target="introModal" modal>
                                 <i class="medium material-icons">local_post_office</i></a>
                                 <!-- flight_takeoff, pets, weekend -->
                         </div>
@@ -245,8 +251,8 @@
                                                 style="width: 80%; margin: auto;
                                                 display: flex; justify-content: space-around; align-items: center;">
 
-                                                <a class='btn btn-sm size2' style="padding-left: 20px; padding-right: 20px"
-                                                   data-target='instructionsModal' modal>?</a>
+                                                <a class="btn btn-sm size2" style="padding-left: 20px; padding-right: 20px"
+                                                   data-target="instructionsModal" modal>?</a>
 
                                                 <button class="size2"
                                                         ng-click="uploadPasted(txt)">Go</button>
@@ -421,7 +427,7 @@
                             class="dictionary"
                             ch="change"
                             ></vocabulary>
-
+                        <div style="height: 30px">&nbsp;</div>
         
                         <!--pre>{{ slct }}</pre-->
                         <!--pre>{{ xx }}</pre-->
